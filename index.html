@@ -5,256 +5,232 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VeneMed - Sistema de Salud Soberano</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
     :root {
-      --primary: #2b6cb0; --primary-dark: #1a365d; --primary-light: #3182ce;
-      --accent: #f6ad55; --accent-dark: #ed8936;
-      --success: #38a169; --danger: #e53e3e; --warning: #d69e2e;
-      --bg: #f0f4f8; --surface: #ffffff;
-      --text: #1a202c; --text-muted: #718096;
-      --border: #e2e8f0;
-      --radius: 12px; --radius-lg: 20px;
+      --primary: #2563eb; --primary-dark: #1e3a5f; --primary-light: #3b82f6;
+      --primary-bg: #eff6ff; --accent: #f59e0b; --accent-dark: #d97706;
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+      --bg: #f1f5f9; --surface: #ffffff; --surface-hover: #f8fafc;
+      --text: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8;
+      --border: #e2e8f0; --border-light: #f1f5f9;
+      --radius: 16px; --radius-sm: 10px; --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
       --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
       --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+      --shadow-xl: 0 25px 60px rgba(0,0,0,0.15);
       --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
     /* ===== LANDING ===== */
-    #landing { min-height: 100vh; background: linear-gradient(135deg, #0f1f3d 0%, #1a365d 30%, #2b6cb0 65%, #1e4d7a 100%); position: relative; overflow: hidden; }
-    #landing::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.5; }
-    .landing-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-    .particle { position: absolute; font-size: 2rem; opacity: 0.06; animation: float 20s infinite linear; }
-    @keyframes float { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.06; } 90% { opacity: 0.06; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
+    #landing { min-height: 100vh; background: linear-gradient(135deg, #0c1833 0%, #1a365d 35%, #1e4d7a 60%, #1a365d 100%); position: relative; overflow: hidden; isolation: isolate; }
+    #landing .bg-grid { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.6; }
+    #landing .bg-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.1) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.05) 0%, transparent 50%); pointer-events: none; }
 
-    .landing-nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 18px 40px; max-width: 1200px; margin: 0 auto; }
-    .landing-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .landing-logo .icon { width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-    .landing-logo .text { color: white; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
-    .landing-logo .text span { color: #90cdf4; }
+    .landing-nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 18px 32px; max-width: 1200px; margin: 0 auto; }
+    .landing-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .landing-logo .icon-wrap { width: 42px; height: 42px; background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    .landing-logo .text { color: white; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px; }
+    .landing-logo .text span { color: #93c5fd; }
     .landing-buttons { display: flex; gap: 10px; }
-    .btn-landing { padding: 10px 26px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: var(--transition); border: none; }
-    .btn-landing-primary { background: white; color: var(--primary-dark); }
-    .btn-landing-primary:hover { background: #e2e8f0; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-    .btn-landing-ghost { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.3) !important; }
-    .btn-landing-ghost:hover { border-color: white !important; background: rgba(255,255,255,0.08); transform: translateY(-2px); }
 
-    .hero { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; padding: 50px 20px 40px; text-align: center; }
-    .hero-content { max-width: 720px; }
-    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 6px 18px; border-radius: 50px; font-size: 0.75rem; color: rgba(255,255,255,0.8); margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); }
-    .hero h1 { color: white; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; line-height: 1.15; margin-bottom: 18px; }
-    .hero h1 span { color: var(--accent); }
-    .hero p { color: rgba(255,255,255,0.75); font-size: clamp(0.95rem, 1.5vw, 1.1rem); line-height: 1.7; margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .btn-l { padding: 10px 24px; border-radius: var(--radius-full); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: var(--transition); border: none; }
+    .btn-l-ghost { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.2) !important; }
+    .btn-l-ghost:hover { border-color: white !important; background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+    .btn-l-primary { background: white; color: var(--primary-dark); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .btn-l-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+
+    .hero { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; padding: 60px 20px 50px; text-align: center; }
+    .hero-content { max-width: 750px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); padding: 6px 16px 6px 6px; border-radius: var(--radius-full); font-size: 0.78rem; color: rgba(255,255,255,0.8); margin-bottom: 28px; border: 1px solid rgba(255,255,255,0.08); }
+    .hero-badge .dot { width: 8px; height: 8px; background: #34d399; border-radius: 50%; display: inline-block; margin-right: 4px; animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .hero h1 { color: white; font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { color: rgba(255,255,255,0.65); font-size: clamp(0.95rem, 1.4vw, 1.1rem); line-height: 1.7; margin-bottom: 36px; max-width: 540px; margin-left: auto; margin-right: auto; }
     .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-hero { padding: 14px 34px; border-radius: 50px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); border: none; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-hero-primary { background: linear-gradient(135deg, var(--accent), #f6ad55); color: var(--primary-dark); box-shadow: 0 8px 25px rgba(246,173,85,0.35); }
-    .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(246,173,85,0.45); }
-    .btn-hero-secondary { background: rgba(255,255,255,0.12); color: white; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15) !important; }
-    .btn-hero-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+    .btn-hero { padding: 15px 36px; border-radius: var(--radius-full); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); border: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-hero-primary { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #0c1833; box-shadow: 0 8px 30px rgba(245,158,11,0.35); }
+    .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(245,158,11,0.45); }
+    .btn-hero-secondary { background: rgba(255,255,255,0.08); color: white; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12) !important; }
+    .btn-hero-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-3px); }
 
-    .stats { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; max-width: 700px; margin: 30px auto 0; padding: 0 20px; background: rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
-    .stat-item { padding: 24px 20px; text-align: center; }
-    .stat-item + .stat-item { border-left: 1px solid rgba(255,255,255,0.08); }
-    .stat-number { color: white; font-size: 1.8rem; font-weight: 800; }
-    .stat-label { color: rgba(255,255,255,0.6); font-size: 0.78rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stats-bar { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 640px; margin: 36px auto 0; padding: 0 20px; background: rgba(255,255,255,0.06); border-radius: var(--radius); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.06); }
+    .stats-bar .s-item { padding: 24px 20px; text-align: center; }
+    .stats-bar .s-item+.s-item { border-left: 1px solid rgba(255,255,255,0.06); }
+    .stats-bar .num { color: white; font-size: 1.8rem; font-weight: 800; }
+    .stats-bar .lbl { color: rgba(255,255,255,0.45); font-size: 0.75rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
 
-    .features { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1050px; margin: 40px auto 0; padding: 0 20px 60px; }
-    @media (max-width: 768px) { .features { grid-template-columns: 1fr; } .stats { grid-template-columns: 1fr; } .stat-item + .stat-item { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); } }
-    .feature-card { background: rgba(255,255,255,0.06); backdrop-filter: blur(15px); border-radius: var(--radius-lg); padding: 32px 28px; border: 1px solid rgba(255,255,255,0.08); transition: var(--transition); }
-    .feature-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
-    .feature-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 18px; background: rgba(255,255,255,0.1); }
-    .feature-card h3 { color: white; font-size: 1.05rem; margin-bottom: 8px; font-weight: 700; }
-    .feature-card p { color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.6; }
+    .features { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1050px; margin: 50px auto 0; padding: 0 20px 60px; }
+    @media (max-width: 768px) { .features { grid-template-columns: 1fr; } .stats-bar { grid-template-columns: 1fr; } .stats-bar .s-item+.s-item { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); } .landing-nav { flex-wrap: wrap; gap: 12px; justify-content: center; } }
+    .f-card { background: rgba(255,255,255,0.04); backdrop-filter: blur(15px); border-radius: var(--radius); padding: 32px 24px; border: 1px solid rgba(255,255,255,0.06); transition: var(--transition); }
+    .f-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
+    .f-card .fi { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 18px; background: rgba(255,255,255,0.08); }
+    .f-card h3 { color: white; font-size: 1rem; margin-bottom: 8px; font-weight: 700; }
+    .f-card p { color: rgba(255,255,255,0.5); font-size: 0.85rem; line-height: 1.6; }
 
-    .landing-footer { position: relative; z-index: 2; border-top: 1px solid rgba(255,255,255,0.06); padding: 30px 20px; text-align: center; }
-    .landing-footer p { color: rgba(255,255,255,0.35); font-size: 0.8rem; }
+    .landing-footer { position: relative; z-index: 2; border-top: 1px solid rgba(255,255,255,0.05); padding: 24px 20px; text-align: center; }
+    .landing-footer p { color: rgba(255,255,255,0.25); font-size: 0.78rem; }
 
     /* ===== MODAL ===== */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
-    .modal { background: var(--surface); border-radius: var(--radius-lg); width: 100%; max-width: 460px; box-shadow: var(--shadow-lg); overflow: hidden; animation: modalIn 0.35s ease; }
+    .modal { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 440px; box-shadow: var(--shadow-xl); overflow: hidden; animation: modalIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
     @keyframes modalIn { from { transform: scale(0.92) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
-    .modal-header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 22px 28px; color: white; display: flex; justify-content: space-between; align-items: center; }
-    .modal-header h2 { font-size: 1.2rem; font-weight: 700; }
-    .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.15); color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-    .modal-close:hover { background: rgba(255,255,255,0.25); }
-    .modal-body { padding: 24px 28px 28px; }
-    .modal-tabs { display: flex; gap: 0; margin-bottom: 22px; background: #f1f4f9; border-radius: 10px; padding: 3px; }
-    .modal-tabs button { flex: 1; padding: 9px; border: none; background: transparent; font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: 0.2s; color: var(--text-muted); border-radius: 8px; }
-    .modal-tabs button.active { background: white; color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .modal-header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 24px 28px; color: white; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h2 { font-size: 1.15rem; font-weight: 700; }
+    .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.12); color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .modal-close:hover { background: rgba(255,255,255,0.2); }
+    .modal-body { padding: 24px; }
+    .modal-tabs { display: flex; gap: 0; margin-bottom: 24px; background: var(--bg); border-radius: var(--radius-sm); padding: 3px; }
+    .modal-tabs button { flex: 1; padding: 9px; border: none; background: transparent; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: 0.2s; color: var(--text-muted); border-radius: 8px; }
+    .modal-tabs button.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm); }
 
-    /* ===== FORMS ===== */
     .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-weight: 600; font-size: 0.75rem; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group label { display: block; font-weight: 600; font-size: 0.72rem; margin-bottom: 6px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
     .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 0.9rem;
-      transition: var(--transition); background: #f8fafc; font-family: inherit;
+      width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.9rem;
+      transition: var(--transition); background: var(--surface-hover); font-family: inherit; color: var(--text);
     }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(43,108,176,0.08);
+      border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
     }
-    .form-group input.error { border-color: var(--danger); }
 
-    .btn { padding: 11px 24px; border-radius: 10px; font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: var(--transition); border: none; display: inline-flex; align-items: center; gap: 8px; justify-content: center; text-decoration: none; }
+    .btn { padding: 10px 22px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: var(--transition); border: none; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 15px rgba(43,108,176,0.3); }
+    .btn-primary:hover { background: #1d4ed8; box-shadow: 0 4px 15px rgba(37,99,235,0.25); }
     .btn-success { background: var(--success); color: white; }
-    .btn-success:hover { background: #2f855a; box-shadow: 0 4px 15px rgba(56,161,105,0.3); }
+    .btn-success:hover { background: #059669; box-shadow: 0 4px 15px rgba(16,185,129,0.25); }
     .btn-danger { background: var(--danger); color: white; }
-    .btn-danger:hover { background: #c53030; }
+    .btn-danger:hover { background: #dc2626; }
     .btn-warning { background: var(--warning); color: white; }
-    .btn-warning:hover { background: #b7791f; }
-    .btn-secondary { background: #e2e8f0; color: #4a5568; }
+    .btn-warning:hover { background: var(--accent-dark); }
+    .btn-secondary { background: #e2e8f0; color: var(--text-secondary); }
     .btn-secondary:hover { background: #cbd5e0; }
-    .btn-sm { padding: 7px 14px; font-size: 0.75rem; }
+    .btn-sm { padding: 6px 12px; font-size: 0.72rem; }
     .btn-block { width: 100%; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-spinner { display: none; width: 16px; height: 16px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.6s linear infinite; }
     .btn.loading .btn-text { display: none; }
     .btn.loading .btn-spinner { display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .form-error { color: var(--danger); font-size: 0.78rem; margin-top: 10px; display: none; text-align: center; background: #fef2f2; padding: 8px 12px; border-radius: 8px; border: 1px solid #fecaca; }
 
-    .form-error { color: var(--danger); font-size: 0.8rem; margin-top: 8px; display: none; text-align: center; }
-
-    /* ===== APP ===== */
+    /* ===== APP HEADER ===== */
     #appContent { display: none; }
     #appContent.active { display: block; }
-    .app-header { background: linear-gradient(135deg, #0f1f3d, #1a365d, #2b6cb0); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.15); }
+    .app-header { background: linear-gradient(135deg, #0c1833, #1a365d); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
     .app-header-inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .app-logo { display: flex; align-items: center; gap: 10px; font-size: 1.15rem; font-weight: 800; }
-    .app-logo span { color: #90cdf4; }
+    .app-logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 800; }
+    .app-logo span { color: #93c5fd; }
     .app-user { display: flex; align-items: center; gap: 14px; }
     .app-user-name { font-size: 0.85rem; font-weight: 600; }
-    .badge { padding: 3px 14px; border-radius: 50px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
-    .badge-doctor { background: var(--accent); color: var(--primary-dark); }
-    .badge-paciente { background: #68d391; color: #1a365d; }
-    .btn-logout { padding: 7px 18px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.25); background: transparent; color: white; font-size: 0.78rem; cursor: pointer; transition: 0.2s; font-weight: 600; }
-    .btn-logout:hover { background: rgba(255,255,255,0.1); border-color: white; }
+    .badge { padding: 3px 14px; border-radius: var(--radius-full); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-doctor { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #0c1833; }
+    .badge-paciente { background: linear-gradient(135deg, #34d399, #10b981); color: #0c1833; }
+    .btn-logout { padding: 7px 18px; border-radius: var(--radius-full); border: 1px solid rgba(255,255,255,0.15); background: transparent; color: white; font-size: 0.78rem; cursor: pointer; transition: 0.2s; font-weight: 600; }
+    .btn-logout:hover { background: rgba(255,255,255,0.08); border-color: white; }
 
-    .app-body { max-width: 1200px; margin: 0 auto; padding: 24px 20px 40px; }
+    .app-body { max-width: 1200px; margin: 0 auto; padding: 28px 24px 60px; }
 
-    /* ===== STATS CARDS ===== */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: var(--surface); border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); transition: var(--transition); }
-    .stat-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-    .stat-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); line-height: 1; }
-    .stat-card .lbl { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; }
-    .stat-card .ico { font-size: 1.4rem; margin-bottom: 8px; }
+    /* ===== STATS ===== */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .s-card { background: var(--surface); border-radius: var(--radius); padding: 22px 20px; border: 1px solid var(--border); transition: var(--transition); }
+    .s-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .s-card .ico { font-size: 1.5rem; margin-bottom: 10px; }
+    .s-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); line-height: 1; }
+    .s-card .lbl { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
 
     /* ===== CARD ===== */
-    .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; transition: box-shadow 0.2s; }
-    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px solid #f1f4f9; }
-    .card-header h2 { font-size: 1.05rem; color: var(--text); display: flex; align-items: center; gap: 8px; font-weight: 700; }
+    .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px solid var(--border-light); }
+    .card-header h2 { font-size: 1rem; display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text); }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .app-header-inner { flex-wrap: wrap; gap: 10px; } }
 
     /* ===== TABLE ===== */
-    .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
-    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
-    th { background: #f8fafc; text-align: left; padding: 11px 14px; font-weight: 600; color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); }
-    td { padding: 11px 14px; border-bottom: 1px solid #f1f4f9; }
+    .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { background: var(--surface-hover); text-align: left; padding: 12px 16px; font-weight: 600; color: var(--text-secondary); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border-light); }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f8fafc; }
+    tr:hover td { background: var(--surface-hover); }
+    .acciones { white-space: nowrap; }
 
     /* ===== SEARCH ===== */
-    .search-box { position: relative; max-width: 280px; }
-    .search-box input { width: 100%; padding: 8px 14px 8px 36px; border: 2px solid var(--border); border-radius: 8px; font-size: 0.82rem; transition: var(--transition); background: #f8fafc; }
+    .search-box { position: relative; }
+    .search-box input { width: 100%; padding: 9px 14px 9px 36px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.82rem; transition: var(--transition); background: var(--surface-hover); color: var(--text); }
     .search-box input:focus { border-color: var(--primary); outline: none; background: white; }
-    .search-box .ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; opacity: 0.4; }
+    .search-box .ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; opacity: 0.35; pointer-events: none; }
 
-    .info-box { background: linear-gradient(135deg, #ebf8ff, #e0edf8); border: 1px solid #bee3f8; border-radius: var(--radius); padding: 24px; margin-bottom: 24px; display: flex; gap: 18px; align-items: flex-start; }
-    .info-box .icon { font-size: 2.2rem; line-height: 1; }
-    .info-box h3 { font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 4px; }
-    .info-box p { color: #4a5568; font-size: 0.88rem; line-height: 1.5; }
+    .info-box { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 24px; margin-bottom: 24px; display: flex; gap: 16px; align-items: flex-start; }
+    .info-box .icon { font-size: 2rem; line-height: 1; }
+    .info-box h3 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 4px; font-weight: 700; }
+    .info-box p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
 
     .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
-    .info-item { padding: 12px 14px; background: #f8fafc; border-radius: 8px; border: 1px solid #f1f4f9; }
-    .info-item .label { font-size: 0.68rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.3px; }
-    .info-item .value { font-size: 0.9rem; color: var(--text); margin-top: 2px; font-weight: 500; }
+    .info-item { padding: 12px 14px; background: var(--surface-hover); border-radius: 8px; border: 1px solid var(--border-light); }
+    .info-item .label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.4px; }
+    .info-item .value { font-size: 0.88rem; color: var(--text); margin-top: 3px; font-weight: 500; }
 
     .hidden { display: none !important; }
-    .empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); }
-    .empty-state .ico { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
-    .empty-state p { font-size: 0.88rem; }
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--text-muted); }
+    .empty-state .ico { font-size: 3rem; margin-bottom: 12px; opacity: 0.4; }
+    .empty-state p { font-size: 0.85rem; }
 
-    /* ===== TOASTS ===== */
-    .toast { position: fixed; top: 24px; right: 24px; padding: 14px 22px; border-radius: var(--radius); color: white; font-weight: 600; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideIn 0.35s ease; font-size: 0.88rem; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(10px); }
-    .toast-success { background: rgba(56,161,105,0.95); }
-    .toast-error { background: rgba(229,62,62,0.95); }
-    @keyframes slideIn { from { transform: translateX(120%) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
-
-    /* ===== LOADING SKELETON ===== */
-    .skeleton { background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    .skeleton-row { display: flex; gap: 16px; margin-bottom: 12px; }
-    .skeleton-cell { height: 24px; flex: 1; }
-    .skeleton-card { height: 80px; border-radius: var(--radius); margin-bottom: 16px; }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 22px; border-radius: var(--radius-sm); color: white; font-weight: 600; z-index: 9999; box-shadow: var(--shadow-lg); animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85rem; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(12px); }
+    .toast-success { background: rgba(16,185,129,0.95); }
+    .toast-error { background: rgba(239,68,68,0.95); }
+    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
 <!-- ===== LANDING ===== -->
 <div id="landing">
-  <div class="landing-particles">
-    <div class="particle" style="left:10%;animation-duration:25s;animation-delay:-2s;">🏥</div>
-    <div class="particle" style="left:30%;animation-duration:30s;animation-delay:-8s;">💊</div>
-    <div class="particle" style="left:55%;animation-duration:22s;animation-delay:-4s;">🔬</div>
-    <div class="particle" style="left:75%;animation-duration:28s;animation-delay:-12s;">❤️</div>
-    <div class="particle" style="left:90%;animation-duration:35s;animation-delay:-6s;">🩺</div>
-    <div class="particle" style="left:20%;animation-duration:26s;animation-delay:-15s;">📋</div>
-  </div>
+  <div class="bg-grid"></div>
+  <div class="bg-gradient"></div>
 
   <nav class="landing-nav">
     <a class="landing-logo" href="#">
-      <span class="icon">🏥</span>
+      <span class="icon-wrap">🏥</span>
       <span class="text">Vene<span>Med</span></span>
     </a>
     <div class="landing-buttons">
-      <button class="btn btn-landing-ghost" onclick="abrirModal('login')">Iniciar Sesión</button>
-      <button class="btn btn-landing-primary" onclick="abrirModal('register')">Registrarse</button>
+      <button class="btn btn-l-ghost" onclick="abrirModal('login')">Iniciar Sesión</button>
+      <button class="btn btn-l-primary" onclick="abrirModal('register')">Registrarse</button>
     </div>
   </nav>
 
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-badge">🩺 Sistema de Salud Soberano</div>
-      <h1>Tu salud en <span>tus manos</span>, siempre</h1>
-      <p>Accede a tu historial clínico, consulta tus recetas y mantén el control total de tu información médica desde cualquier lugar. Soberanía digital para tu bienestar.</p>
+      <div class="hero-badge"><span class="dot"></span> ✦ Salud Digital Soberana</div>
+      <h1>Tu salud, <span>siempre contigo</span></h1>
+      <p>Accede a tu historial clínico, consulta recetas médicas y mantén el control total de tu información. Sin intermediarios, sin límites.</p>
       <div class="hero-actions">
-        <button class="btn btn-hero-primary" onclick="abrirModal('register')">✨ Crear mi cuenta gratis</button>
-        <button class="btn btn-hero-secondary" onclick="abrirModal('login')">Ya tengo cuenta</button>
+        <button class="btn btn-hero-primary" onclick="abrirModal('register')">✦ Crear mi cuenta</button>
+        <button class="btn btn-hero-secondary" onclick="abrirModal('login')">Ya estoy registrado</button>
       </div>
-      <div class="stats">
-        <div class="stat-item"><div class="stat-number" id="statPacientes">0</div><div class="stat-label">Pacientes</div></div>
-        <div class="stat-item"><div class="stat-number" id="statRecetas">0</div><div class="stat-label">Recetas</div></div>
-        <div class="stat-item"><div class="stat-number" id="statDoctores">1</div><div class="stat-label">Doctores</div></div>
+      <div class="stats-bar">
+        <div class="s-item"><div class="num" id="statPacientes">0</div><div class="lbl">Pacientes</div></div>
+        <div class="s-item"><div class="num" id="statRecetas">0</div><div class="lbl">Recetas</div></div>
+        <div class="s-item"><div class="num" id="statDoctores">1</div><div class="lbl">Doctores</div></div>
       </div>
     </div>
   </section>
 
   <section class="features">
-    <div class="feature-card">
-      <div class="feature-icon">🔐</div>
-      <h3>Seguro y Privado</h3>
-      <p>Tus datos médicos están protegidos con autenticación por token. Solo tú y tu doctor tienen acceso.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📋</div>
-      <h3>Historial Clínico</h3>
-      <p>Consulta tu historial médico completo en cualquier momento, desde cualquier dispositivo, al instante.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">💊</div>
-      <h3>Gestión de Recetas</h3>
-      <p>Los doctores recetan digitalmente y los pacientes reciben sus tratamientos de forma inmediata.</p>
-    </div>
+    <div class="f-card"><div class="fi">🔐</div><h3>Privacidad Total</h3><p>Tus datos médicos están protegidos con autenticación por token. Solo tú y tu médico tienen acceso.</p></div>
+    <div class="f-card"><div class="fi">📋</div><h3>Historial Digital</h3><p>Tu historial clínico completo disponible 24/7 desde cualquier dispositivo, en cualquier lugar.</p></div>
+    <div class="f-card"><div class="fi">💊</div><h3>Recetas Instantáneas</h3><p>Los doctores recetan digitalmente. Tú recibes tus tratamientos al instante, sin papeles.</p></div>
   </section>
 
-  <footer class="landing-footer">
-    <p>VeneMed &mdash; Sistema de Salud Soberano &copy; 2026</p>
-  </footer>
+  <footer class="landing-footer"><p>VeneMed &mdash; Sistema de Salud Soberano &copy; 2026</p></footer>
 </div>
 
 <!-- ===== MODAL ===== -->
@@ -267,18 +243,12 @@
     <div class="modal-body">
       <div class="modal-tabs">
         <button id="tabLogin" class="active" onclick="switchModalTab('login')">Iniciar Sesión</button>
-        <button id="tabRegister" onclick="switchModalTab('register')">Registrarse</button>
+        <button id="tabRegister" onclick="switchModalTab('register')">Crear Cuenta</button>
       </div>
 
       <div id="loginForm">
-        <div class="form-group">
-          <label>Usuario / Cédula</label>
-          <input type="text" id="loginUsuario" placeholder="admin o V-12345678">
-        </div>
-        <div class="form-group">
-          <label>Contraseña</label>
-          <input type="password" id="loginClave" placeholder="••••••••">
-        </div>
+        <div class="form-group"><label>Usuario / Cédula</label><input type="text" id="loginUsuario" placeholder="admin o V-12345678"></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="loginClave" placeholder="••••••••"></div>
         <button class="btn btn-primary btn-block" id="loginBtn" onclick="login()" disabled>
           <span class="btn-text">Ingresar</span>
           <span class="btn-spinner"></span>
@@ -318,12 +288,11 @@
   </header>
 
   <div class="app-body">
-    <!-- DOCTOR VIEW -->
     <div id="doctorView" class="hidden">
       <div class="stats-grid" id="doctorStats">
-        <div class="stat-card"><div class="ico">👥</div><div class="num" id="statTotalPacientes">0</div><div class="lbl">Pacientes</div></div>
-        <div class="stat-card"><div class="ico">💊</div><div class="num" id="statTotalRecetas">0</div><div class="lbl">Recetas</div></div>
-        <div class="stat-card"><div class="ico">📋</div><div class="num" id="statPacientesHoy">0</div><div class="lbl">Atendidos Hoy</div></div>
+        <div class="s-card"><div class="ico">👥</div><div class="num" id="statTotalPacientes">0</div><div class="lbl">Pacientes</div></div>
+        <div class="s-card"><div class="ico">💊</div><div class="num" id="statTotalRecetas">0</div><div class="lbl">Recetas</div></div>
+        <div class="s-card"><div class="ico">📋</div><div class="num" id="statPacientesHoy">0</div><div class="lbl">Atendidos Hoy</div></div>
       </div>
 
       <div class="grid-2">
@@ -359,359 +328,152 @@
       </div>
 
       <div class="card">
-        <div class="card-header">
-          <h2>👥 Pacientes</h2>
-          <div class="search-box">
-            <span class="ico">🔍</span>
-            <input type="text" placeholder="Buscar paciente..." oninput="filtrarPacientes(this.value)">
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>ID</th><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Acciones</th></tr></thead>
-            <tbody id="tablaPacientes"></tbody>
-          </table>
-        </div>
+        <div class="card-header"><h2>👥 Pacientes</h2><div class="search-box"><span class="ico">🔍</span><input type="text" placeholder="Buscar..." oninput="filtrarPacientes(this.value)"></div></div>
+        <div class="table-wrap"><table><thead><tr><th>ID</th><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Acciones</th></tr></thead><tbody id="tablaPacientes"></tbody></table></div>
         <div class="empty-state hidden" id="emptyPacientes"><div class="ico">👤</div><p>No hay pacientes registrados</p></div>
-        <div class="empty-state hidden" id="emptyPacientesSearch"><div class="ico">🔍</div><p>No se encontraron pacientes con ese término</p></div>
+        <div class="empty-state hidden" id="emptyPacientesSearch"><div class="ico">🔍</div><p>No se encontraron pacientes</p></div>
       </div>
     </div>
 
-    <!-- PATIENT VIEW -->
     <div id="pacienteView" class="hidden">
-      <div class="info-box">
-        <div class="icon">👋</div>
-        <div>
-          <h3>Bienvenido, <span id="pNombreBienvenida"></span></h3>
-          <p>Este es tu portal de salud personal. Aquí puedes consultar tu historial clínico y todas tus recetas activas.</p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header"><h2>📋 Mi Historia Clínica</h2></div>
-        <div id="miInfo" class="info-grid"></div>
-      </div>
+      <div class="info-box"><div class="icon">👋</div><div><h3>Bienvenido, <span id="pNombreBienvenida"></span></h3><p>Portal de salud personal. Consulta tu historial clínico y recetas activas.</p></div></div>
+      <div class="card"><div class="card-header"><h2>📋 Mi Historia Clínica</h2></div><div id="miInfo" class="info-grid"></div></div>
     </div>
 
     <div class="card hidden" id="recetasSection">
-      <div class="card-header">
-        <h2>💊 Recetas · <span id="recetasPacienteNombre"></span></h2>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>ID</th><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th><th>Doctor</th><th>Fecha</th><th id="accionesCol">Acciones</th></tr></thead>
-          <tbody id="tablaRecetas"></tbody>
-        </table>
-      </div>
+      <div class="card-header"><h2>💊 Recetas · <span id="recetasPacienteNombre"></span></h2></div>
+      <div class="table-wrap"><table><thead><tr><th>ID</th><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th><th>Doctor</th><th>Fecha</th><th id="accionesCol">Acciones</th></tr></thead><tbody id="tablaRecetas"></tbody></table></div>
       <div class="empty-state hidden" id="emptyRecetas"><div class="ico">💊</div><p>No hay recetas registradas</p></div>
     </div>
   </div>
 </div>
 
 <script>
-  let token = null, userRole = null, currentUser = null;
-  let pacientes = [], todasRecetas = [];
-  let recetaEditandoId = null;
+  let token, userRole, currentUser, pacientes = [], recetaEditandoId = null;
 
-  // ===== MODAL =====
-  function abrirModal(tab) { document.getElementById('modalOverlay').classList.add('active'); switchModalTab(tab); document.getElementById('loginError').style.display = 'none'; document.getElementById('registerError').style.display = 'none'; }
+  function abrirModal(t) { document.getElementById('modalOverlay').classList.add('active'); switchModalTab(t); }
   function cerrarModal() { document.getElementById('modalOverlay').classList.remove('active'); }
   document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) cerrarModal(); });
 
-  function switchModalTab(tab) {
-    document.getElementById('tabLogin').className = tab === 'login' ? 'active' : '';
-    document.getElementById('tabRegister').className = tab === 'register' ? 'active' : '';
-    document.getElementById('loginForm').className = tab === 'login' ? '' : 'hidden';
-    document.getElementById('registerForm').className = tab === 'register' ? '' : 'hidden';
-    document.getElementById('modalTitle').textContent = tab === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta';
-    enableBtnChecks(tab);
+  function switchModalTab(t) {
+    ['tabLogin','tabRegister'].forEach(id => document.getElementById(id).className = id === `tab${t[0].toUpperCase()+t.slice(1)}` ? 'active' : '');
+    document.getElementById('loginForm').className = t === 'login' ? '' : 'hidden';
+    document.getElementById('registerForm').className = t === 'register' ? '' : 'hidden';
+    document.getElementById('modalTitle').textContent = t === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta';
+    ['loginError','registerError'].forEach(id => document.getElementById(id).style.display = 'none');
+    enableBtns(t);
   }
 
-  // ===== INPUT VALIDATION =====
-  function checkLoginFields() {
-    const u = document.getElementById('loginUsuario').value.trim();
-    const c = document.getElementById('loginClave').value.trim();
-    document.getElementById('loginBtn').disabled = !u || !c;
-  }
-  function checkRegisterFields() {
-    const n = document.getElementById('regNombre').value.trim();
-    const a = document.getElementById('regApellido').value.trim();
-    const c = document.getElementById('regCedula').value.trim();
-    const p = document.getElementById('regPassword').value.trim();
-    document.getElementById('registerBtn').disabled = !n || !a || !c || !p;
-  }
-  function enableBtnChecks(tab) {
-    if (tab === 'login') { checkLoginFields(); document.getElementById('loginUsuario').oninput = checkLoginFields; document.getElementById('loginClave').oninput = checkLoginFields; }
-    else { checkRegisterFields(); ['regNombre','regApellido','regCedula','regPassword'].forEach(id => document.getElementById(id).oninput = checkRegisterFields); }
+  function checkLogin() { document.getElementById('loginBtn').disabled = !document.getElementById('loginUsuario').value.trim() || !document.getElementById('loginClave').value.trim(); }
+  function checkRegister() { document.getElementById('registerBtn').disabled = !document.getElementById('regNombre').value.trim() || !document.getElementById('regApellido').value.trim() || !document.getElementById('regCedula').value.trim() || !document.getElementById('regPassword').value.trim(); }
+  function enableBtns(t) {
+    if (t === 'login') { checkLogin(); ['loginUsuario','loginClave'].forEach(id => document.getElementById(id).oninput = checkLogin); }
+    else { checkRegister(); ['regNombre','regApellido','regCedula','regPassword'].forEach(id => document.getElementById(id).oninput = checkRegister); }
   }
 
-  // ===== API =====
-  async function api(method, url, body) {
-    const opts = { method, headers: { 'Content-Type': 'application/json' } };
-    if (token) opts.headers['Authorization'] = `Bearer ${token}`;
-    if (body) opts.body = JSON.stringify(body);
-    const res = await fetch(url, opts);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Error en la solicitud');
-    return data;
-  }
+  async function api(m, u, b) { const o = { method: m, headers: { 'Content-Type': 'application/json' } }; if (token) o.headers['Authorization'] = `Bearer ${token}`; if (b) o.body = JSON.stringify(b); const r = await fetch(u, o); const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Error'); return d; }
+  function toast(msg, t) { const el = document.createElement('div'); el.className = `toast toast-${t}`; el.innerHTML = (t === 'success' ? '✓ ' : '✕ ') + msg; document.body.appendChild(el); setTimeout(() => el.remove(), 3500); }
+  function loading(id, s) { const b = document.getElementById(id); b.classList.toggle('loading', s); b.disabled = s; }
 
-  function toast(msg, type) {
-    const t = document.createElement('div');
-    t.className = `toast toast-${type}`;
-    t.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 3500);
-  }
-
-  function loading(btnId, state) {
-    document.getElementById(btnId).classList.toggle('loading', state);
-    document.getElementById(btnId).disabled = state;
-  }
-
-  // ===== AUTH =====
   async function login() {
-    const usuario = document.getElementById('loginUsuario').value;
-    const clave = document.getElementById('loginClave').value;
-    const errEl = document.getElementById('loginError');
     loading('loginBtn', true);
     try {
-      const data = await (await fetch('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usuario, clave }) })).json();
-      if (!data.token) { errEl.textContent = data.error; errEl.style.display = 'block'; loading('loginBtn', false); return; }
-      token = data.token; userRole = data.role; currentUser = data;
-      entrarAlSistema();
-    } catch (e) { errEl.textContent = e.message; errEl.style.display = 'block'; loading('loginBtn', false); }
+      const data = await (await fetch('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usuario: document.getElementById('loginUsuario').value, clave: document.getElementById('loginClave').value }) })).json();
+      if (!data.token) { document.getElementById('loginError').textContent = data.error; document.getElementById('loginError').style.display = 'block'; loading('loginBtn', false); return; }
+      token = data.token; userRole = data.role; currentUser = data; entrar();
+    } catch (e) { document.getElementById('loginError').textContent = e.message; document.getElementById('loginError').style.display = 'block'; loading('loginBtn', false); }
   }
 
   async function register() {
-    const body = {
-      nombre: document.getElementById('regNombre').value,
-      apellido: document.getElementById('regApellido').value,
-      cedula: document.getElementById('regCedula').value,
-      password: document.getElementById('regPassword').value,
-      telefono: document.getElementById('regTelefono').value,
-      email: document.getElementById('regEmail').value,
-      direccion: document.getElementById('regDireccion').value,
-    };
-    const errEl = document.getElementById('registerError');
     loading('registerBtn', true);
     try {
-      const data = await api('POST', '/auth/register', body);
-      token = data.token; userRole = data.role; currentUser = data;
-      toast(data.mensaje, 'success');
-      entrarAlSistema();
-    } catch (e) { errEl.textContent = e.message; errEl.style.display = 'block'; loading('registerBtn', false); }
+      const data = await api('POST', '/auth/register', { nombre: document.getElementById('regNombre').value, apellido: document.getElementById('regApellido').value, cedula: document.getElementById('regCedula').value, password: document.getElementById('regPassword').value, telefono: document.getElementById('regTelefono').value, email: document.getElementById('regEmail').value, direccion: document.getElementById('regDireccion').value });
+      token = data.token; userRole = data.role; currentUser = data; toast(data.mensaje, 'success'); entrar();
+    } catch (e) { document.getElementById('registerError').textContent = e.message; document.getElementById('registerError').style.display = 'block'; loading('registerBtn', false); }
   }
 
-  function entrarAlSistema() {
-    cerrarModal();
-    document.getElementById('landing').style.display = 'none';
-    document.getElementById('appContent').classList.add('active');
-    document.getElementById('userNameDisplay').textContent = currentUser.nombre || 'Usuario';
+  function entrar() {
+    cerrarModal(); document.getElementById('landing').style.display = 'none'; document.getElementById('appContent').classList.add('active');
+    document.getElementById('userNameDisplay').textContent = currentUser.nombre;
     const badge = document.getElementById('userRoleBadge');
     if (userRole === 'doctor') {
       badge.textContent = 'Doctor'; badge.className = 'badge badge-doctor';
-      document.getElementById('doctorView').classList.remove('hidden');
-      document.getElementById('pacienteView').classList.add('hidden');
-      cargarDashboardDoctor();
+      document.getElementById('doctorView').classList.remove('hidden'); document.getElementById('pacienteView').classList.add('hidden');
+      cargarDash();
     } else {
       badge.textContent = 'Paciente'; badge.className = 'badge badge-paciente';
-      document.getElementById('pacienteView').classList.remove('hidden');
-      document.getElementById('doctorView').classList.add('hidden');
-      document.getElementById('pNombreBienvenida').textContent = currentUser.nombre || 'Paciente';
-      cargarMiInfo();
+      document.getElementById('pacienteView').classList.remove('hidden'); document.getElementById('doctorView').classList.add('hidden');
+      document.getElementById('pNombreBienvenida').textContent = currentUser.nombre;
+      api('GET', `/pacientes/${currentUser.id}`).then(p => { document.getElementById('miInfo').innerHTML = ['Nombre Completo',`${p.nombre} ${p.apellido}`,'Cédula',p.cedula,'Teléfono',p.telefono||'-','Email',p.email||'-','Dirección',p.direccion||'-','Nacimiento',p.fecha_nacimiento||'-','Historial Médico',p.historial_medico||'Sin historial'].reduce((a,_,i,A)=>i%2?`${a}</div>`:`${a}<div class="info-item"><div class="label">${A[i]}</div><div class="value">${A[i+1]||'-'}`, '')+(p.historial_medico&&p.historial_medico.length>60?' style="grid-column:1/-1"':''); });
       verRecetas(currentUser.id);
     }
-    toast(`Bienvenido, ${currentUser.nombre || ''}`, 'success');
+    toast(`Bienvenido, ${currentUser.nombre}`, 'success');
   }
 
-  function logout() {
-    token = null; userRole = null; currentUser = null;
-    document.getElementById('landing').style.display = 'block';
-    document.getElementById('appContent').classList.remove('active');
-    document.getElementById('doctorView').classList.add('hidden');
-    document.getElementById('pacienteView').classList.add('hidden');
-    document.getElementById('recetasSection').classList.add('hidden');
-    document.getElementById('loginUsuario').value = '';
-    document.getElementById('loginClave').value = '';
-    toast('Sesión cerrada', 'success');
-  }
+  function logout() { token=null; userRole=null; currentUser=null; document.getElementById('landing').style.display='block'; document.getElementById('appContent').classList.remove('active'); ['doctorView','pacienteView','recetasSection'].forEach(id=>document.getElementById(id).classList.add('hidden')); ['loginUsuario','loginClave'].forEach(id=>document.getElementById(id).value=''); toast('Sesión cerrada','success'); }
 
-  // ===== DOCTOR DASHBOARD =====
-  async function cargarDashboardDoctor() {
+  async function cargarDash() {
     try {
       pacientes = await api('GET', '/pacientes');
       document.getElementById('statTotalPacientes').textContent = pacientes.length;
-      let totalRecetas = 0;
-      for (const p of pacientes) { try { const r = await api('GET', `/pacientes/${p.id}/recetas`); totalRecetas += r.length; } catch(e) {} }
-      document.getElementById('statTotalRecetas').textContent = totalRecetas;
-      document.getElementById('statPacientesHoy').textContent = pacientes.slice(0, 3).length + '+';
-
+      let tr = 0; for (const p of pacientes) try { const r = await api('GET', `/pacientes/${p.id}/recetas`); tr += r.length; } catch(e) {}
+      document.getElementById('statTotalRecetas').textContent = tr;
+      document.getElementById('statPacientesHoy').textContent = Math.min(pacientes.length, 5) + '+';
       document.getElementById('statPacientes').textContent = pacientes.length;
-      document.getElementById('statRecetas').textContent = totalRecetas;
-
-      cargarTablaPacientes(pacientes);
-      cargarSelectPacientes();
-    } catch (e) { toast(e.message, 'error'); }
+      document.getElementById('statRecetas').textContent = tr;
+      renderPacientes(pacientes); cargarSelect();
+    } catch(e) { toast(e.message, 'error'); }
   }
 
-  function filtrarPacientes(term) {
-    if (!term) { cargarTablaPacientes(pacientes); return; }
-    const filtrados = pacientes.filter(p =>
-      `${p.nombre} ${p.apellido}`.toLowerCase().includes(term.toLowerCase()) ||
-      (p.cedula || '').toLowerCase().includes(term.toLowerCase())
-    );
-    cargarTablaPacientes(filtrados);
+  function filtrarPacientes(t) {
+    if (!t) return renderPacientes(pacientes);
+    const f = pacientes.filter(p => `${p.nombre} ${p.apellido}`.toLowerCase().includes(t.toLowerCase()) || (p.cedula||'').toLowerCase().includes(t.toLowerCase()));
+    renderPacientes(f);
   }
 
-  function cargarTablaPacientes(lista) {
+  function renderPacientes(lista) {
     const tbody = document.getElementById('tablaPacientes');
     const empty = document.getElementById('emptyPacientes');
-    const emptySearch = document.getElementById('emptyPacientesSearch');
-    if (lista.length === 0) {
-      tbody.innerHTML = '';
-      empty.classList.remove('hidden');
-      emptySearch.classList.add('hidden');
-      return;
-    }
-    empty.classList.add('hidden');
-    emptySearch.classList.add('hidden');
-    tbody.innerHTML = lista.map(p => `<tr><td>${p.id}</td><td>${p.nombre} ${p.apellido}</td><td>${p.cedula}</td><td>${p.telefono || '-'}</td><td class="acciones"><button class="btn btn-primary btn-sm" onclick="verRecetas(${p.id})">📋 Recetas</button><button class="btn btn-warning btn-sm" onclick="editarPaciente(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.id})">🗑</button></td></tr>`).join('');
+    const emptyS = document.getElementById('emptyPacientesSearch');
+    if (!lista.length) { tbody.innerHTML = ''; empty.classList.remove('hidden'); emptyS.classList.add('hidden'); return; }
+    empty.classList.add('hidden'); emptyS.classList.add('hidden');
+    tbody.innerHTML = lista.map(p => `<tr><td>${p.id}</td><td><strong>${p.nombre} ${p.apellido}</strong></td><td>${p.cedula}</td><td>${p.telefono||'-'}</td><td class="acciones"><button class="btn btn-primary btn-sm" onclick="verRecetas(${p.id})">📋</button><button class="btn btn-warning btn-sm" onclick="editarPaciente(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.id})">🗑</button></td></tr>`).join('');
   }
 
-  async function cargarMiInfo() {
-    try {
-      const p = await api('GET', `/pacientes/${currentUser.id}`);
-      document.getElementById('miInfo').innerHTML = `
-        <div class="info-item"><div class="label">Nombre</div><div class="value">${p.nombre} ${p.apellido}</div></div>
-        <div class="info-item"><div class="label">Cédula</div><div class="value">${p.cedula}</div></div>
-        <div class="info-item"><div class="label">Teléfono</div><div class="value">${p.telefono || '-'}</div></div>
-        <div class="info-item"><div class="label">Email</div><div class="value">${p.email || '-'}</div></div>
-        <div class="info-item"><div class="label">Dirección</div><div class="value">${p.direccion || '-'}</div></div>
-        <div class="info-item"><div class="label">Nacimiento</div><div class="value">${p.fecha_nacimiento || '-'}</div></div>
-        <div class="info-item" style="grid-column:1/-1"><div class="label">Historial Médico</div><div class="value">${p.historial_medico || 'Sin historial registrado'}</div></div>
-      `;
-    } catch (e) { toast(e.message, 'error'); }
-  }
-
-  // ===== PACIENTES CRUD =====
-  function limpiarFormPaciente() {
-    ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial','pPassword'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('pPassword').value = '123456';
-    document.getElementById('editPacienteId').value = '';
-    document.getElementById('btnCancelarEditar').classList.add('hidden');
-  }
+  function limpiarFormPaciente() { ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial','pPassword'].forEach(id=>document.getElementById(id).value=''); document.getElementById('pPassword').value='123456'; document.getElementById('editPacienteId').value=''; document.getElementById('btnCancelarEditar').classList.add('hidden'); }
 
   async function crearPaciente() {
-    const body = {
-      nombre: document.getElementById('pNombre').value,
-      apellido: document.getElementById('pApellido').value,
-      cedula: document.getElementById('pCedula').value,
-      password: document.getElementById('pPassword').value || '123456',
-      fecha_nacimiento: document.getElementById('pFechaNac').value,
-      telefono: document.getElementById('pTelefono').value,
-      email: document.getElementById('pEmail').value,
-      direccion: document.getElementById('pDireccion').value,
-      historial_medico: document.getElementById('pHistorial').value,
-    };
+    const body = { nombre: document.getElementById('pNombre').value, apellido: document.getElementById('pApellido').value, cedula: document.getElementById('pCedula').value, password: document.getElementById('pPassword').value||'123456', fecha_nacimiento: document.getElementById('pFechaNac').value, telefono: document.getElementById('pTelefono').value, email: document.getElementById('pEmail').value, direccion: document.getElementById('pDireccion').value, historial_medico: document.getElementById('pHistorial').value };
     const editId = document.getElementById('editPacienteId').value;
-    try {
-      editId ? await api('PUT', `/pacientes/${editId}`, body) : await api('POST', '/pacientes', body);
-      toast(editId ? 'Paciente actualizado' : 'Paciente creado', 'success');
-      limpiarFormPaciente(); cargarDashboardDoctor();
-    } catch (e) { toast(e.message, 'error'); }
+    try { editId ? await api('PUT', `/pacientes/${editId}`, body) : await api('POST', '/pacientes', body); toast(editId?'Paciente actualizado':'Paciente creado','success'); limpiarFormPaciente(); cargarDash(); } catch(e) { toast(e.message,'error'); }
   }
 
   async function editarPaciente(id) {
-    try {
-      const p = await api('GET', `/pacientes/${id}`);
-      document.getElementById('pNombre').value = p.nombre;
-      document.getElementById('pApellido').value = p.apellido;
-      document.getElementById('pCedula').value = p.cedula;
-      document.getElementById('pPassword').value = p.password || '';
-      document.getElementById('pFechaNac').value = p.fecha_nacimiento || '';
-      document.getElementById('pTelefono').value = p.telefono || '';
-      document.getElementById('pEmail').value = p.email || '';
-      document.getElementById('pDireccion').value = p.direccion || '';
-      document.getElementById('pHistorial').value = p.historial_medico || '';
-      document.getElementById('editPacienteId').value = id;
-      document.getElementById('btnCancelarEditar').classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (e) { toast(e.message, 'error'); }
+    try { const p = await api('GET', `/pacientes/${id}`); ['Nombre','Apellido','Cedula','FechaNac','Telefono','Email','Direccion','Historial','Password'].forEach(f => { const v = f==='FechaNac'?'fecha_nacimiento':'historial_medico'; document.getElementById(`p${f}`).value = p[v.toLowerCase()]||p[f.toLowerCase()]||''; }); document.getElementById('editPacienteId').value=id; document.getElementById('btnCancelarEditar').classList.remove('hidden'); window.scrollTo({top:0,behavior:'smooth'}); } catch(e) { toast(e.message,'error'); }
   }
 
-  async function eliminarPaciente(id) {
-    if (!confirm('¿Eliminar este paciente y todas sus recetas?')) return;
-    try { await api('DELETE', `/pacientes/${id}`); toast('Paciente eliminado', 'success'); cargarDashboardDoctor(); document.getElementById('recetasSection').classList.add('hidden'); } catch (e) { toast(e.message, 'error'); }
-  }
+  async function eliminarPaciente(id) { if (!confirm('¿Eliminar paciente y sus recetas?')) return; try { await api('DELETE',`/pacientes/${id}`); toast('Eliminado','success'); cargarDash(); document.getElementById('recetasSection').classList.add('hidden'); } catch(e) { toast(e.message,'error'); } }
+  async function cargarSelect() { try { const l=await api('GET','/pacientes'); document.getElementById('rPacienteId').innerHTML = l.map(p=>`<option value="${p.id}">${p.nombre} ${p.apellido}</option>`).join(''); } catch(e) {} }
 
-  async function cargarSelectPacientes() {
-    try { const lista = await api('GET', '/pacientes'); document.getElementById('rPacienteId').innerHTML = lista.map(p => `<option value="${p.id}">${p.nombre} ${p.apellido} - ${p.cedula}</option>`).join(''); } catch (e) {}
-  }
-
-  // ===== RECETAS =====
-  function limpiarFormReceta() { ['rMedicamento','rDosis','rFrecuencia','rDuracion','rDoctor','rNotas'].forEach(id => document.getElementById(id).value = ''); recetaEditandoId = null; }
+  function limpiarFormReceta() { ['rMedicamento','rDosis','rFrecuencia','rDuracion','rDoctor','rNotas'].forEach(id=>document.getElementById(id).value=''); recetaEditandoId=null; }
 
   async function crearReceta() {
-    const body = {
-      paciente_id: parseInt(document.getElementById('rPacienteId').value),
-      medicamento: document.getElementById('rMedicamento').value,
-      dosis: document.getElementById('rDosis').value,
-      frecuencia: document.getElementById('rFrecuencia').value,
-      duracion: document.getElementById('rDuracion').value,
-      doctor: document.getElementById('rDoctor').value,
-      notas: document.getElementById('rNotas').value,
-    };
+    const body = { paciente_id:parseInt(document.getElementById('rPacienteId').value), medicamento:document.getElementById('rMedicamento').value, dosis:document.getElementById('rDosis').value, frecuencia:document.getElementById('rFrecuencia').value, duracion:document.getElementById('rDuracion').value, doctor:document.getElementById('rDoctor').value, notas:document.getElementById('rNotas').value };
+    try { recetaEditandoId ? await api('PUT',`/recetas/${recetaEditandoId}`,body) : await api('POST','/recetas',body); toast(recetaEditandoId?'Actualizada':'Creada','success'); limpiarFormReceta(); const pid=document.getElementById('recetasSection').dataset.pacienteId; if(pid&&!document.getElementById('recetasSection').classList.contains('hidden')) verRecetas(parseInt(pid)); if(userRole==='doctor') cargarDash(); } catch(e) { toast(e.message,'error'); }
+  }
+
+  async function verRecetas(pid) {
     try {
-      if (recetaEditandoId) { await api('PUT', `/recetas/${recetaEditandoId}`, body); toast('Receta actualizada', 'success'); }
-      else { await api('POST', '/recetas', body); toast('Receta creada', 'success'); }
-      limpiarFormReceta();
-      const rid = document.getElementById('recetasSection').dataset.pacienteId;
-      if (rid && !document.getElementById('recetasSection').classList.contains('hidden')) verRecetas(parseInt(rid));
-      if (userRole === 'doctor') { cargarDashboardDoctor(); }
-    } catch (e) { toast(e.message, 'error'); }
+      const p=await api('GET',`/pacientes/${pid}`); document.getElementById('recetasPacienteNombre').textContent=`${p.nombre} ${p.apellido}`;
+      const recetas=await api('GET',`/pacientes/${pid}/recetas`); const tbody=document.getElementById('tablaRecetas'); const empty=document.getElementById('emptyRecetas'); const col=document.getElementById('accionesCol');
+      const isPac=userRole==='paciente'; col.classList.toggle('hidden',isPac);
+      if(!recetas.length){tbody.innerHTML='';empty.classList.remove('hidden');}else{empty.classList.add('hidden');tbody.innerHTML=recetas.map(r=>`<tr><td>${r.id}</td><td><strong>${r.medicamento}</strong></td><td>${r.dosis}</td><td>${r.frecuencia}</td><td>${r.doctor||'-'}</td><td>${new Date(r.fecha_emision).toLocaleDateString()}</td><td class="${isPac?'hidden':''}"><button class="btn btn-warning btn-sm" onclick="editarReceta(${r.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="eliminarReceta(${r.id})">🗑</button></td></tr>`).join('');}
+      document.getElementById('recetasSection').classList.remove('hidden'); document.getElementById('recetasSection').dataset.pacienteId=pid;
+    } catch(e) { toast(e.message,'error'); }
   }
 
-  async function verRecetas(pacienteId) {
-    try {
-      const p = await api('GET', `/pacientes/${pacienteId}`);
-      document.getElementById('recetasPacienteNombre').textContent = `${p.nombre} ${p.apellido}`;
-      const recetas = await api('GET', `/pacientes/${pacienteId}/recetas`);
-      const tbody = document.getElementById('tablaRecetas');
-      const empty = document.getElementById('emptyRecetas');
-      const col = document.getElementById('accionesCol');
-      const isPac = userRole === 'paciente';
-
-      if (isPac) col.classList.add('hidden'); else col.classList.remove('hidden');
-
-      if (recetas.length === 0) { tbody.innerHTML = ''; empty.classList.remove('hidden'); }
-      else {
-        empty.classList.add('hidden');
-        tbody.innerHTML = recetas.map(r => `<tr>
-          <td>${r.id}</td>
-          <td><strong>${r.medicamento}</strong></td>
-          <td>${r.dosis}</td>
-          <td>${r.frecuencia}</td>
-          <td>${r.doctor || '-'}</td>
-          <td>${new Date(r.fecha_emision).toLocaleDateString()}</td>
-          <td class="${isPac ? 'hidden' : ''}">
-            <button class="btn btn-warning btn-sm" onclick="editarReceta(${r.id})">✏️</button>
-            <button class="btn btn-danger btn-sm" onclick="eliminarReceta(${r.id})">🗑</button>
-          </td>
-        </tr>`).join('');
-      }
-      document.getElementById('recetasSection').classList.remove('hidden');
-      document.getElementById('recetasSection').dataset.pacienteId = pacienteId;
-    } catch (e) { toast(e.message, 'error'); }
-  }
-
-  async function editarReceta(id) {
-    try { const r = await api('GET', `/recetas/${id}`); document.getElementById('rPacienteId').value = r.paciente_id; document.getElementById('rMedicamento').value = r.medicamento; document.getElementById('rDosis').value = r.dosis; document.getElementById('rFrecuencia').value = r.frecuencia; document.getElementById('rDuracion').value = r.duracion || ''; document.getElementById('rDoctor').value = r.doctor || ''; document.getElementById('rNotas').value = r.notas || ''; recetaEditandoId = id; window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { toast(e.message, 'error'); }
-  }
-
-  async function eliminarReceta(id) {
-    if (!confirm('¿Eliminar esta receta?')) return;
-    try { await api('DELETE', `/recetas/${id}`); toast('Receta eliminada', 'success'); const pid = document.getElementById('recetasSection').dataset.pacienteId; if (pid) verRecetas(parseInt(pid)); cargarDashboardDoctor(); } catch (e) { toast(e.message, 'error'); }
-  }
+  async function editarReceta(id) { try { const r=await api('GET',`/recetas/${id}`); document.getElementById('rPacienteId').value=r.paciente_id; document.getElementById('rMedicamento').value=r.medicamento; document.getElementById('rDosis').value=r.dosis; document.getElementById('rFrecuencia').value=r.frecuencia; document.getElementById('rDuracion').value=r.duracion||''; document.getElementById('rDoctor').value=r.doctor||''; document.getElementById('rNotas').value=r.notas||''; recetaEditandoId=id; window.scrollTo({top:0,behavior:'smooth'}); } catch(e) { toast(e.message,'error'); } }
+  async function eliminarReceta(id) { if(!confirm('¿Eliminar receta?')) return; try { await api('DELETE',`/recetas/${id}`); toast('Eliminada','success'); const pid=document.getElementById('recetasSection').dataset.pacienteId; if(pid) verRecetas(parseInt(pid)); cargarDash(); } catch(e) { toast(e.message,'error'); } }
 </script>
 </body>
 </html>
