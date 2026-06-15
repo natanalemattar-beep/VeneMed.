@@ -1,3 +1,4 @@
+// VeneMed - Sistema de Salud Soberano v2.1
 const express = require('express');
 const { Pool } = require('pg');
 const crypto = require('crypto');
