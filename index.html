@@ -3,32 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeneMed - Sistema de Salud</title>
+  <title>VeneMed - Sistema de Salud Soberano</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a202c; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    header { background: linear-gradient(135deg, #2b6cb0, #2c5282); color: white; padding: 20px 0; text-align: center; margin-bottom: 30px; }
-    h1 { font-size: 1.8rem; }
-    .card { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
-    .card h2 { font-size: 1.2rem; margin-bottom: 15px; color: #2b6cb0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; color: #4a5568; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f0f4f8; color: #1a202c; min-height: 100vh; }
+
+    /* ===== LANDING ===== */
+    #landing {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 40%, #3182ce 70%, #2b6cb0 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #landing::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+    }
+    .landing-nav {
+      position: relative; z-index: 2;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 40px; max-width: 1200px; margin: 0 auto;
+    }
+    .landing-logo { display: flex; align-items: center; gap: 12px; }
+    .landing-logo .icon { font-size: 2rem; }
+    .landing-logo .text { color: white; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+    .landing-logo .text span { color: #90cdf4; }
+    .landing-buttons { display: flex; gap: 12px; }
+    .landing-buttons .btn { padding: 10px 28px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border: none; }
+    .btn-landing-primary { background: white; color: #2b6cb0; }
+    .btn-landing-primary:hover { background: #e2e8f0; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .btn-landing-secondary { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4) !important; }
+    .btn-landing-secondary:hover { border-color: white !important; background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+    .hero { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; padding: 60px 20px 80px; text-align: center; }
+    .hero-content { max-width: 700px; }
+    .hero h1 { color: white; font-size: 3.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
+    .hero h1 span { color: #90cdf4; }
+    .hero p { color: rgba(255,255,255,0.85); font-size: 1.15rem; line-height: 1.7; margin-bottom: 30px; max-width: 550px; margin-left: auto; margin-right: auto; }
+    .hero .cta-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .hero .cta-buttons .btn { padding: 14px 36px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; border: none; }
+    .hero .cta-buttons .btn-primary-cta { background: #f6ad55; color: #1a365d; }
+    .hero .cta-buttons .btn-primary-cta:hover { background: #ed8936; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(246,173,85,0.4); }
+    .hero .cta-buttons .btn-secondary-cta { background: rgba(255,255,255,0.15); color: white; backdrop-filter: blur(10px); }
+    .hero .cta-buttons .btn-secondary-cta:hover { background: rgba(255,255,255,0.25); transform: translateY(-3px); }
+
+    .features { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1000px; margin: -30px auto 0; padding: 0 20px 60px; }
+    @media (max-width: 768px) { .features { grid-template-columns: 1fr; } }
+    .feature-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border-radius: 16px; padding: 30px; text-align: center; border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s; }
+    .feature-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); }
+    .feature-card .icon { font-size: 2.2rem; margin-bottom: 15px; }
+    .feature-card h3 { color: white; font-size: 1.1rem; margin-bottom: 8px; }
+    .feature-card p { color: rgba(255,255,255,0.7); font-size: 0.85rem; line-height: 1.5; }
+
+    /* ===== MODAL (Login/Register) ===== */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px); z-index: 1000;
+      justify-content: center; align-items: center; padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: white; border-radius: 20px; padding: 0; width: 100%; max-width: 450px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3); overflow: hidden; animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+    .modal-header {
+      background: linear-gradient(135deg, #2b6cb0, #2c5282);
+      padding: 20px 30px; color: white; display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-header h2 { font-size: 1.3rem; font-weight: 700; }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2);
+      color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.3); }
+    .modal-body { padding: 25px 30px 30px; }
+    .modal-tabs { display: flex; gap: 0; margin-bottom: 20px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; }
+    .modal-tabs button {
+      flex: 1; padding: 10px; border: none; background: #f7fafc; font-weight: 600; font-size: 0.85rem;
+      cursor: pointer; transition: 0.2s; color: #4a5568;
+    }
+    .modal-tabs button.active { background: #2b6cb0; color: white; }
+    .modal-tabs button:hover:not(.active) { background: #edf2f7; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 600; font-size: 0.8rem; margin-bottom: 5px; color: #4a5568; text-transform: uppercase; letter-spacing: 0.5px; }
     .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 8px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.9rem; transition: border 0.2s;
+      width: 100%; padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem;
+      transition: border 0.2s; background: #f7fafc;
     }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      border-color: #2b6cb0; outline: none; box-shadow: 0 0 0 3px rgba(43,108,176,0.15);
+      border-color: #2b6cb0; outline: none; background: white; box-shadow: 0 0 0 3px rgba(43,108,176,0.1);
     }
-    .form-group textarea { resize: vertical; min-height: 60px; }
-    .btn {
-      padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
-      transition: all 0.2s; display: inline-block; margin-right: 6px; margin-bottom: 6px;
-    }
+    .btn { padding: 11px 24px; border-radius: 10px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; border: none; display: inline-flex; align-items: center; gap: 8px; }
     .btn-primary { background: #2b6cb0; color: white; }
-    .btn-primary:hover { background: #2c5282; }
+    .btn-primary:hover { background: #2c5282; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(43,108,176,0.3); }
     .btn-danger { background: #e53e3e; color: white; }
     .btn-danger:hover { background: #c53030; }
     .btn-success { background: #38a169; color: white; }
@@ -37,447 +109,522 @@
     .btn-secondary:hover { background: #4a5568; }
     .btn-warning { background: #d69e2e; color: white; }
     .btn-warning:hover { background: #b7791f; }
+    .btn-sm { padding: 7px 14px; font-size: 0.78rem; }
+    .btn-block { width: 100%; justify-content: center; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .form-error { color: #e53e3e; font-size: 0.82rem; margin-top: 8px; display: none; }
+
+    /* ===== DASHBOARD APP ===== */
+    #appContent { display: none; }
+    #appContent.active { display: block; }
+    .app-header {
+      background: linear-gradient(135deg, #1a365d, #2b6cb0); color: white; padding: 0;
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+    }
+    .app-header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 14px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .app-logo { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; }
+    .app-logo span { color: #90cdf4; }
+    .app-user { display: flex; align-items: center; gap: 15px; font-size: 0.85rem; }
+    .app-user .badge {
+      padding: 4px 14px; border-radius: 50px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    }
+    .badge-doctor { background: #f6ad55; color: #1a365d; }
+    .badge-paciente { background: #68d391; color: #1a365d; }
+    .btn-logout { padding: 7px 18px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.3); background: transparent; color: white; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-weight: 600; }
+    .btn-logout:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+    .app-body { max-width: 1200px; margin: 0 auto; padding: 25px 20px; }
+
+    .card {
+      background: white; border-radius: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      padding: 24px; margin-bottom: 25px; border: 1px solid #e2e8f0;
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px solid #edf2f7;
+    }
+    .card-header h2 { font-size: 1.1rem; color: #2b6cb0; display: flex; align-items: center; gap: 8px; }
+    .card-header h2 .icon { font-size: 1.2rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    th { background: #edf2f7; text-align: left; padding: 8px; font-weight: 600; color: #4a5568; }
-    td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
-    tr:hover { background: #f7fafc; }
-    .acciones button { font-size: 0.75rem; padding: 4px 10px; }
-    #loginForm { max-width: 400px; margin: 40px auto; }
-    .hidden { display: none; }
+    th { background: #f7fafc; text-align: left; padding: 10px 12px; font-weight: 600; color: #4a5568; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0; }
+    td { padding: 10px 12px; border-bottom: 1px solid #f0f4f8; }
+    tr:hover td { background: #f7fafc; }
+    .acciones button { margin-right: 4px; }
+
+    .info-box {
+      background: linear-gradient(135deg, #ebf8ff, #e0edf8);
+      border: 1px solid #bee3f8; border-radius: 12px; padding: 20px;
+      display: flex; align-items: flex-start; gap: 15px; margin-bottom: 25px;
+    }
+    .info-box .icon { font-size: 2rem; line-height: 1; }
+    .info-box h3 { font-size: 1.1rem; color: #2b6cb0; margin-bottom: 5px; }
+    .info-box p { color: #4a5568; font-size: 0.9rem; line-height: 1.5; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 10px; }
+    .info-item { padding: 10px 14px; background: #f7fafc; border-radius: 8px; }
+    .info-item .label { font-size: 0.72rem; text-transform: uppercase; color: #718096; font-weight: 600; letter-spacing: 0.3px; }
+    .info-item .value { font-size: 0.92rem; color: #1a202c; margin-top: 2px; font-weight: 500; }
+
+    .hidden { display: none !important; }
     .toast {
-      position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 6px; color: white;
-      font-weight: 600; z-index: 1000; animation: slideIn 0.3s ease;
+      position: fixed; top: 20px; right: 20px; padding: 14px 22px; border-radius: 12px; color: white;
+      font-weight: 600; z-index: 9999; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      animation: slideInRight 0.35s ease; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;
     }
     .toast-success { background: #38a169; }
     .toast-error { background: #e53e3e; }
-    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    .info-box { background: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
+    @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    .empty-state { text-align: center; padding: 40px 20px; color: #a0aec0; }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 10px; }
+    .empty-state p { font-size: 0.9rem; }
+
+    select { cursor: pointer; }
+    textarea { resize: vertical; min-height: 60px; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>VeneMed - Sistema de Salud Soberano</h1>
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="landing">
+  <nav class="landing-nav">
+    <div class="landing-logo">
+      <span class="icon">🏥</span>
+      <span class="text">Vene<span>Med</span></span>
     </div>
-  </header>
-
-  <div class="container">
-    <div id="loginForm" class="card">
-      <h2>Iniciar Sesión</h2>
-      <div class="form-group">
-        <label>Usuario / Cédula</label>
-        <input type="text" id="loginUsuario" placeholder="admin o Cédula">
-      </div>
-      <div class="form-group">
-        <label>Clave</label>
-        <input type="password" id="loginClave" placeholder="admin123 o Contraseña">
-      </div>
-      <button class="btn btn-primary" onclick="login()">Ingresar</button>
-      <span id="loginError" style="color:#e53e3e;margin-left:10px;font-size:0.85rem;"></span>
+    <div class="landing-buttons">
+      <button class="btn btn-landing-secondary" onclick="abrirModal('login')">Iniciar Sesión</button>
+      <button class="btn btn-landing-primary" onclick="abrirModal('register')">Registrarse</button>
     </div>
+  </nav>
 
-    <div id="appContent" class="hidden">
-      <div style="text-align:right;margin-bottom:15px;">
-        <span id="tokenStatus" style="font-size:0.8rem;color:#718096;margin-right:10px;"></span>
-        <button class="btn btn-secondary" onclick="logout()">Cerrar Sesión</button>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Tu salud en tus <span>manos</span></h1>
+      <p>VeneMed es un sistema de salud soberano y descentralizado. Accede a tu historial clínico, consulta tus recetas y mantén el control total de tu información médica.</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary-cta" onclick="abrirModal('register')">✨ Crear mi cuenta</button>
+        <button class="btn btn-secondary-cta" onclick="abrirModal('login')">Ya tengo cuenta</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="feature-card">
+      <div class="icon">🔐</div>
+      <h3>Seguro y Privado</h3>
+      <p>Tus datos médicos están protegidos con autenticación por token y almacenados en una base de datos segura.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📋</div>
+      <h3>Historial Clínico</h3>
+      <p>Consulta tu historial médico completo en cualquier momento, desde cualquier dispositivo.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💊</div>
+      <h3>Gestión de Recetas</h3>
+      <p>Doctores pueden recetar medicamentos y pacientes pueden ver sus tratamientos al instante.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ===== MODAL LOGIN / REGISTER ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Iniciar Sesión</h2>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <button id="tabLogin" class="active" onclick="switchModalTab('login')">Iniciar Sesión</button>
+        <button id="tabRegister" onclick="switchModalTab('register')">Registrarse</button>
       </div>
 
-      <div id="doctorView" class="hidden">
-        <div class="grid">
-          <div class="card">
-            <h2>Registrar Paciente</h2>
-            <div class="form-group">
-              <label>Nombre *</label>
-              <input type="text" id="pNombre">
-            </div>
-            <div class="form-group">
-              <label>Apellido *</label>
-              <input type="text" id="pApellido">
-            </div>
-            <div class="form-group">
-              <label>Cédula *</label>
-              <input type="text" id="pCedula">
-            </div>
-            <div class="form-group">
-              <label>Contraseña *</label>
-              <input type="password" id="pPassword" value="123456">
-            </div>
-            <div class="form-group">
-              <label>Fecha de Nacimiento</label>
-              <input type="date" id="pFechaNac">
-            </div>
-            <div class="form-group">
-              <label>Teléfono</label>
-              <input type="text" id="pTelefono">
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" id="pEmail">
-            </div>
-            <div class="form-group">
-              <label>Dirección</label>
-              <input type="text" id="pDireccion">
-            </div>
-            <div class="form-group">
-              <label>Historial Médico</label>
-              <textarea id="pHistorial" rows="3"></textarea>
-            </div>
-            <button class="btn btn-primary" onclick="crearPaciente()">Guardar Paciente</button>
-            <button class="btn btn-secondary" onclick="limpiarFormPaciente()" style="display:none;" id="btnCancelarEditar">Cancelar</button>
-            <input type="hidden" id="editPacienteId" value="">
-          </div>
-
-          <div class="card">
-            <h2>Crear Receta</h2>
-            <div class="form-group">
-              <label>Paciente *</label>
-              <select id="rPacienteId"></select>
-            </div>
-            <div class="form-group">
-              <label>Medicamento *</label>
-              <input type="text" id="rMedicamento">
-            </div>
-            <div class="form-group">
-              <label>Dosis *</label>
-              <input type="text" id="rDosis" placeholder="Ej: 500mg">
-            </div>
-            <div class="form-group">
-              <label>Frecuencia *</label>
-              <input type="text" id="rFrecuencia" placeholder="Ej: Cada 8 horas">
-            </div>
-            <div class="form-group">
-              <label>Duración</label>
-              <input type="text" id="rDuracion" placeholder="Ej: 7 días">
-            </div>
-            <div class="form-group">
-              <label>Doctor</label>
-              <input type="text" id="rDoctor">
-            </div>
-            <div class="form-group">
-              <label>Notas</label>
-              <textarea id="rNotas" rows="2"></textarea>
-            </div>
-            <button class="btn btn-primary" onclick="crearReceta()">Guardar Receta</button>
-          </div>
+      <!-- LOGIN FORM -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label>Usuario / Cédula</label>
+          <input type="text" id="loginUsuario" placeholder="admin o tu cédula">
         </div>
-
-        <div class="card">
-          <h2>Pacientes Registrados</h2>
-          <div style="overflow-x:auto;">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Cédula</th>
-                  <th>Teléfono</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="tablaPacientes"></tbody>
-            </table>
-          </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="loginClave" placeholder="admin123 o tu contraseña">
         </div>
+        <button class="btn btn-primary btn-block" onclick="login()">Ingresar</button>
+        <div class="form-error" id="loginError"></div>
       </div>
 
-      <div id="pacienteView" class="hidden">
-        <div class="info-box">
-          <h2>Hola, <span id="pNombreBienvenida"></span> 👋</h2>
-          <p>Bienvenido a tu portal de salud. Aquí puedes consultar tu historia clínica y tus recetas médicas.</p>
+      <!-- REGISTER FORM -->
+      <div id="registerForm" class="hidden">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" id="regNombre" placeholder="Tu nombre">
         </div>
-        <div class="card">
-          <h2>Mi Información Personal</h2>
-          <div id="miInfo" style="font-size: 0.9rem; line-height: 1.6;">
-            <!-- Cargado dinámicamente -->
-          </div>
+        <div class="form-group">
+          <label>Apellido *</label>
+          <input type="text" id="regApellido" placeholder="Tu apellido">
         </div>
-      </div>
-
-      <div class="card" id="recetasSection" style="display:none;">
-        <h2>Recetas del Paciente <span id="recetasPacienteNombre"></span></h2>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Medicamento</th>
-                <th>Dosis</th>
-                <th>Frecuencia</th>
-                <th>Doctor</th>
-                <th>Fecha</th>
-                <th class="col-doctor">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tablaRecetas"></tbody>
-          </table>
+        <div class="form-group">
+          <label>Cédula *</label>
+          <input type="text" id="regCedula" placeholder="V-12345678">
         </div>
+        <div class="form-group">
+          <label>Contraseña *</label>
+          <input type="password" id="regPassword" placeholder="Crea una contraseña segura">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" id="regTelefono" placeholder="0412-1234567">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="regEmail" placeholder="correo@ejemplo.com">
+        </div>
+        <div class="form-group">
+          <label>Dirección</label>
+          <input type="text" id="regDireccion" placeholder="Tu dirección">
+        </div>
+        <button class="btn btn-success btn-block" onclick="register()">Crear mi cuenta</button>
+        <div class="form-error" id="registerError"></div>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    let token = null;
-    let userRole = null;
-    let currentUser = null;
-    let pacientes = [];
-    let recetaEditandoId = null;
+<!-- ===== DASHBOARD ===== -->
+<div id="appContent">
+  <header class="app-header">
+    <div class="app-header-inner">
+      <div class="app-logo">🏥 Vene<span>Med</span></div>
+      <div class="app-user">
+        <span id="userNameDisplay"></span>
+        <span class="badge" id="userRoleBadge"></span>
+        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </header>
 
-    async function api(method, url, body = null) {
-      const opts = {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-      };
-      if (token) opts.headers['Authorization'] = `Bearer ${token}`;
-      if (body) opts.body = JSON.stringify(body);
-      const res = await fetch(url, opts);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error en la solicitud');
-      return data;
+  <div class="app-body">
+    <!-- DOCTOR VIEW -->
+    <div id="doctorView" class="hidden">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h2><span class="icon">➕</span> Registrar Paciente</h2>
+          </div>
+          <div class="form-group"><label>Nombre *</label><input type="text" id="pNombre"></div>
+          <div class="form-group"><label>Apellido *</label><input type="text" id="pApellido"></div>
+          <div class="form-group"><label>Cédula *</label><input type="text" id="pCedula"></div>
+          <div class="form-group"><label>Contraseña</label><input type="text" id="pPassword" value="123456"></div>
+          <div class="form-group"><label>Fecha de Nacimiento</label><input type="date" id="pFechaNac"></div>
+          <div class="form-group"><label>Teléfono</label><input type="text" id="pTelefono"></div>
+          <div class="form-group"><label>Email</label><input type="email" id="pEmail"></div>
+          <div class="form-group"><label>Dirección</label><input type="text" id="pDireccion"></div>
+          <div class="form-group"><label>Historial Médico</label><textarea id="pHistorial" rows="3"></textarea></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="crearPaciente()">💾 Guardar</button>
+            <button class="btn btn-secondary hidden" onclick="limpiarFormPaciente()" id="btnCancelarEditar">Cancelar</button>
+          </div>
+          <input type="hidden" id="editPacienteId">
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2><span class="icon">💊</span> Crear Receta</h2>
+          </div>
+          <div class="form-group"><label>Paciente *</label><select id="rPacienteId"></select></div>
+          <div class="form-group"><label>Medicamento *</label><input type="text" id="rMedicamento" placeholder="Ej: Losartan"></div>
+          <div class="form-group"><label>Dosis *</label><input type="text" id="rDosis" placeholder="Ej: 500mg"></div>
+          <div class="form-group"><label>Frecuencia *</label><input type="text" id="rFrecuencia" placeholder="Ej: Cada 12 horas"></div>
+          <div class="form-group"><label>Duración</label><input type="text" id="rDuracion" placeholder="Ej: 30 días"></div>
+          <div class="form-group"><label>Doctor</label><input type="text" id="rDoctor" placeholder="Dr. Rodríguez"></div>
+          <div class="form-group"><label>Notas</label><textarea id="rNotas" rows="2"></textarea></div>
+          <button class="btn btn-primary" onclick="crearReceta()">💊 Recetar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2><span class="icon">👥</span> Pacientes Registrados</h2>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>ID</th><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Acciones</th></tr></thead>
+            <tbody id="tablaPacientes"></tbody>
+          </table>
+        </div>
+        <div class="empty-state hidden" id="emptyPacientes">
+          <div class="icon">👤</div>
+          <p>No hay pacientes registrados aún</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PATIENT VIEW -->
+    <div id="pacienteView" class="hidden">
+      <div class="info-box">
+        <div class="icon">👋</div>
+        <div>
+          <h3>Bienvenido, <span id="pNombreBienvenida"></span></h3>
+          <p>Este es tu portal de salud. Aquí puedes consultar tu información personal y tus recetas activas.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2><span class="icon">📋</span> Mi Historia Clínica</h2>
+        </div>
+        <div id="miInfo" class="info-grid"></div>
+      </div>
+    </div>
+
+    <!-- RECETAS SECTION -->
+    <div class="card hidden" id="recetasSection">
+      <div class="card-header">
+        <h2><span class="icon">💊</span> Recetas · <span id="recetasPacienteNombre"></span></h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>ID</th><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th><th>Doctor</th><th>Fecha</th><th class="acciones-col">Acciones</th></tr></thead>
+          <tbody id="tablaRecetas"></tbody>
+        </table>
+      </div>
+      <div class="empty-state hidden" id="emptyRecetas">
+        <div class="icon">💊</div>
+        <p>Este paciente no tiene recetas</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let token = null, userRole = null, currentUser = null, pacientes = [], recetaEditandoId = null;
+
+  // ===== MODAL =====
+  function abrirModal(tab = 'login') { document.getElementById('modalOverlay').classList.add('active'); switchModalTab(tab); }
+  function cerrarModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+  document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) cerrarModal(); });
+
+  function switchModalTab(tab) {
+    document.getElementById('tabLogin').className = tab === 'login' ? 'active' : '';
+    document.getElementById('tabRegister').className = tab === 'register' ? 'active' : '';
+    document.getElementById('loginForm').className = tab === 'login' ? '' : 'hidden';
+    document.getElementById('registerForm').className = tab === 'register' ? '' : 'hidden';
+    document.getElementById('modalTitle').textContent = tab === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta';
+    document.getElementById('loginError').style.display = 'none';
+    document.getElementById('registerError').style.display = 'none';
+  }
+
+  // ===== API =====
+  async function api(method, url, body = null) {
+    const opts = { method, headers: { 'Content-Type': 'application/json' } };
+    if (token) opts.headers['Authorization'] = `Bearer ${token}`;
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(url, opts);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error');
+    return data;
+  }
+
+  function toast(msg, type = 'success') { const t = document.createElement('div'); t.className = `toast toast-${type}`; t.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+
+  // ===== LOGIN =====
+  async function login() {
+    const usuario = document.getElementById('loginUsuario').value;
+    const clave = document.getElementById('loginClave').value;
+    const errEl = document.getElementById('loginError');
+    try {
+      const data = await (await fetch('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usuario, clave }) })).json();
+      if (!data.token) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
+      token = data.token; userRole = data.role; currentUser = data;
+      entrarAlSistema();
+    } catch (e) { errEl.textContent = e.message; errEl.style.display = 'block'; }
+  }
+
+  // ===== REGISTER =====
+  async function register() {
+    const body = {
+      nombre: document.getElementById('regNombre').value,
+      apellido: document.getElementById('regApellido').value,
+      cedula: document.getElementById('regCedula').value,
+      password: document.getElementById('regPassword').value,
+      telefono: document.getElementById('regTelefono').value,
+      email: document.getElementById('regEmail').value,
+      direccion: document.getElementById('regDireccion').value,
+    };
+    const errEl = document.getElementById('registerError');
+    try {
+      const data = await api('POST', '/auth/register', body);
+      token = data.token; userRole = data.role; currentUser = data;
+      toast(data.mensaje);
+      entrarAlSistema();
+    } catch (e) { errEl.textContent = e.message; errEl.style.display = 'block'; }
+  }
+
+  // ===== ENTER SYSTEM =====
+  function entrarAlSistema() {
+    cerrarModal();
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('appContent').classList.add('active');
+    document.getElementById('userNameDisplay').textContent = currentUser.nombre || 'Usuario';
+    const badge = document.getElementById('userRoleBadge');
+    if (userRole === 'doctor') {
+      badge.textContent = 'Doctor'; badge.className = 'badge badge-doctor';
+      document.getElementById('doctorView').classList.remove('hidden');
+      cargarPacientes(); cargarSelectPacientes();
+    } else {
+      badge.textContent = 'Paciente'; badge.className = 'badge badge-paciente';
+      document.getElementById('pacienteView').classList.remove('hidden');
+      document.getElementById('pNombreBienvenida').textContent = currentUser.nombre || 'Paciente';
+      cargarMiInfo(); verRecetas(currentUser.id);
     }
+    toast(`Bienvenido ${currentUser.nombre || ''}`);
+  }
 
-    function mostrarToast(mensaje, tipo = 'success') {
-      const t = document.createElement('div');
-      t.className = `toast toast-${tipo}`;
-      t.textContent = mensaje;
-      document.body.appendChild(t);
-      setTimeout(() => t.remove(), 3000);
-    }
+  function logout() {
+    token = null; userRole = null; currentUser = null;
+    document.getElementById('landing').style.display = 'block';
+    document.getElementById('appContent').classList.remove('active');
+    document.getElementById('doctorView').classList.add('hidden');
+    document.getElementById('pacienteView').classList.add('hidden');
+    document.getElementById('recetasSection').classList.add('hidden');
+    document.getElementById('loginUsuario').value = '';
+    document.getElementById('loginClave').value = '';
+    toast('Sesión cerrada');
+  }
 
-    async function login() {
-      const usuario = document.getElementById('loginUsuario').value;
-      const clave = document.getElementById('loginClave').value;
-      try {
-        const data = await fetch('/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ usuario, clave })
-        }).then(r => r.json());
-        if (data.token) {
-          token = data.token;
-          userRole = data.role;
-          currentUser = data;
-          document.getElementById('loginForm').classList.add('hidden');
-          document.getElementById('appContent').classList.remove('hidden');
-          document.getElementById('tokenStatus').textContent = `Sesión: ${userRole}`;
-          mostrarToast('Inicio de sesión exitoso');
-          
-          if (userRole === 'doctor') {
-            document.getElementById('doctorView').classList.remove('hidden');
-            cargarPacientes();
-            cargarSelectPacientes();
-          } else {
-            document.getElementById('pacienteView').classList.remove('hidden');
-            document.getElementById('pNombreBienvenida').textContent = data.nombre || 'Paciente';
-            cargarMiInfo();
-            verRecetas(currentUser.id);
-          }
-        } else {
-          document.getElementById('loginError').textContent = data.error || 'Error';
-        }
-      } catch (e) {
-        document.getElementById('loginError').textContent = e.message;
+  // ===== PACIENTES CRUD =====
+  async function cargarPacientes() {
+    try {
+      pacientes = await api('GET', '/pacientes');
+      const tbody = document.getElementById('tablaPacientes');
+      const empty = document.getElementById('emptyPacientes');
+      if (pacientes.length === 0) { tbody.innerHTML = ''; empty.classList.remove('hidden'); return; }
+      empty.classList.add('hidden');
+      tbody.innerHTML = pacientes.map(p => `<tr><td>${p.id}</td><td>${p.nombre} ${p.apellido}</td><td>${p.cedula}</td><td>${p.telefono || '-'}</td><td class="acciones"><button class="btn btn-primary btn-sm" onclick="verRecetas(${p.id})">📋 Recetas</button><button class="btn btn-warning btn-sm" onclick="editarPaciente(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.id})">🗑</button></td></tr>`).join('');
+    } catch (e) { toast(e.message, 'error'); }
+  }
+
+  async function cargarMiInfo() {
+    try {
+      const p = await api('GET', `/pacientes/${currentUser.id}`);
+      document.getElementById('miInfo').innerHTML = `
+        <div class="info-item"><div class="label">Nombre Completo</div><div class="value">${p.nombre} ${p.apellido}</div></div>
+        <div class="info-item"><div class="label">Cédula</div><div class="value">${p.cedula}</div></div>
+        <div class="info-item"><div class="label">Teléfono</div><div class="value">${p.telefono || '-'}</div></div>
+        <div class="info-item"><div class="label">Email</div><div class="value">${p.email || '-'}</div></div>
+        <div class="info-item"><div class="label">Dirección</div><div class="value">${p.direccion || '-'}</div></div>
+        <div class="info-item"><div class="label">Fecha de Nacimiento</div><div class="value">${p.fecha_nacimiento || '-'}</div></div>
+        <div class="info-item" style="grid-column:1/-1"><div class="label">Historial Médico</div><div class="value">${p.historial_medico || 'Sin historial registrado'}</div></div>
+      `;
+    } catch (e) { toast(e.message, 'error'); }
+  }
+
+  function limpiarFormPaciente() {
+    ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial','pPassword'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('pPassword').value = '123456';
+    document.getElementById('editPacienteId').value = '';
+    document.getElementById('btnCancelarEditar').classList.add('hidden');
+  }
+
+  async function crearPaciente() {
+    const body = {
+      nombre: document.getElementById('pNombre').value,
+      apellido: document.getElementById('pApellido').value,
+      cedula: document.getElementById('pCedula').value,
+      password: document.getElementById('pPassword').value || '123456',
+      fecha_nacimiento: document.getElementById('pFechaNac').value,
+      telefono: document.getElementById('pTelefono').value,
+      email: document.getElementById('pEmail').value,
+      direccion: document.getElementById('pDireccion').value,
+      historial_medico: document.getElementById('pHistorial').value,
+    };
+    const editId = document.getElementById('editPacienteId').value;
+    try {
+      editId ? await api('PUT', `/pacientes/${editId}`, body) : await api('POST', '/pacientes', body);
+      toast(editId ? 'Paciente actualizado' : 'Paciente creado');
+      limpiarFormPaciente(); cargarPacientes(); cargarSelectPacientes();
+    } catch (e) { toast(e.message, 'error'); }
+  }
+
+  async function editarPaciente(id) {
+    try {
+      const p = await api('GET', `/pacientes/${id}`);
+      document.getElementById('pNombre').value = p.nombre;
+      document.getElementById('pApellido').value = p.apellido;
+      document.getElementById('pCedula').value = p.cedula;
+      document.getElementById('pPassword').value = p.password || '';
+      document.getElementById('pFechaNac').value = p.fecha_nacimiento || '';
+      document.getElementById('pTelefono').value = p.telefono || '';
+      document.getElementById('pEmail').value = p.email || '';
+      document.getElementById('pDireccion').value = p.direccion || '';
+      document.getElementById('pHistorial').value = p.historial_medico || '';
+      document.getElementById('editPacienteId').value = id;
+      document.getElementById('btnCancelarEditar').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (e) { toast(e.message, 'error'); }
+  }
+
+  async function eliminarPaciente(id) {
+    if (!confirm('¿Eliminar este paciente y todas sus recetas?')) return;
+    try { await api('DELETE', `/pacientes/${id}`); toast('Paciente eliminado'); cargarPacientes(); cargarSelectPacientes(); document.getElementById('recetasSection').classList.add('hidden'); } catch (e) { toast(e.message, 'error'); }
+  }
+
+  async function cargarSelectPacientes() {
+    try { const lista = await api('GET', '/pacientes'); document.getElementById('rPacienteId').innerHTML = lista.map(p => `<option value="${p.id}">${p.nombre} ${p.apellido} - ${p.cedula}</option>`).join(''); } catch (e) {}
+  }
+
+  // ===== RECETAS =====
+  function limpiarFormReceta() { ['rMedicamento','rDosis','rFrecuencia','rDuracion','rDoctor','rNotas'].forEach(id => document.getElementById(id).value = ''); recetaEditandoId = null; }
+
+  async function crearReceta() {
+    const body = {
+      paciente_id: parseInt(document.getElementById('rPacienteId').value),
+      medicamento: document.getElementById('rMedicamento').value,
+      dosis: document.getElementById('rDosis').value,
+      frecuencia: document.getElementById('rFrecuencia').value,
+      duracion: document.getElementById('rDuracion').value,
+      doctor: document.getElementById('rDoctor').value,
+      notas: document.getElementById('rNotas').value,
+    };
+    try {
+      if (recetaEditandoId) { await api('PUT', `/recetas/${recetaEditandoId}`, body); toast('Receta actualizada'); }
+      else { await api('POST', '/recetas', body); toast('Receta creada'); }
+      limpiarFormReceta();
+      if (!document.getElementById('recetasSection').classList.contains('hidden')) verRecetas(parseInt(document.getElementById('rPacienteId').value) || parseInt(document.getElementById('recetasSection').dataset.pacienteId));
+    } catch (e) { toast(e.message, 'error'); }
+  }
+
+  async function verRecetas(pacienteId) {
+    try {
+      const p = await api('GET', `/pacientes/${pacienteId}`);
+      document.getElementById('recetasPacienteNombre').textContent = `${p.nombre} ${p.apellido}`;
+      const recetas = await api('GET', `/pacientes/${pacienteId}/recetas`);
+      const tbody = document.getElementById('tablaRecetas');
+      const empty = document.getElementById('emptyRecetas');
+      if (recetas.length === 0) { tbody.innerHTML = ''; empty.classList.remove('hidden'); } else { empty.classList.add('hidden');
+        tbody.innerHTML = recetas.map(r => `<tr><td>${r.id}</td><td>${r.medicamento}</td><td>${r.dosis}</td><td>${r.frecuencia}</td><td>${r.doctor || '-'}</td><td>${r.fecha_emision}</td><td class="acciones${userRole === 'paciente' ? ' hidden' : ''}"><button class="btn btn-warning btn-sm" onclick="editarReceta(${r.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="eliminarReceta(${r.id})">🗑</button></td></tr>`).join('');
       }
-    }
+      document.getElementById('recetasSection').classList.remove('hidden');
+      document.getElementById('recetasSection').dataset.pacienteId = pacienteId;
+    } catch (e) { toast(e.message, 'error'); }
+  }
 
-    function logout() {
-      token = null;
-      userRole = null;
-      currentUser = null;
-      document.getElementById('loginForm').classList.remove('hidden');
-      document.getElementById('appContent').classList.add('hidden');
-      document.getElementById('doctorView').classList.add('hidden');
-      document.getElementById('pacienteView').classList.add('hidden');
-      document.getElementById('recetasSection').style.display = 'none';
-      document.getElementById('loginError').textContent = '';
-      document.getElementById('tokenStatus').textContent = '';
-      mostrarToast('Sesión cerrada');
-    }
+  async function editarReceta(id) {
+    try { const r = await api('GET', `/recetas/${id}`); document.getElementById('rPacienteId').value = r.paciente_id; document.getElementById('rMedicamento').value = r.medicamento; document.getElementById('rDosis').value = r.dosis; document.getElementById('rFrecuencia').value = r.frecuencia; document.getElementById('rDuracion').value = r.duracion || ''; document.getElementById('rDoctor').value = r.doctor || ''; document.getElementById('rNotas').value = r.notas || ''; recetaEditandoId = id; window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { toast(e.message, 'error'); }
+  }
 
-    async function cargarPacientes() {
-      try {
-        pacientes = await api('GET', '/pacientes');
-        const tbody = document.getElementById('tablaPacientes');
-        tbody.innerHTML = pacientes.map(p => `
-          <tr>
-            <td>${p.id}</td>
-            <td>${p.nombre} ${p.apellido}</td>
-            <td>${p.cedula}</td>
-            <td>${p.telefono || '-'}</td>
-            <td class="acciones">
-              <button class="btn btn-primary" onclick="verRecetas(${p.id})">Recetas</button>
-              <button class="btn btn-warning" onclick="editarPaciente(${p.id})">Editar</button>
-              <button class="btn btn-danger" onclick="eliminarPaciente(${p.id})">Eliminar</button>
-            </td>
-          </tr>
-        `).join('');
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    async function cargarMiInfo() {
-      try {
-        const p = await api('GET', `/pacientes/${currentUser.id}`);
-        document.getElementById('miInfo').innerHTML = `
-          <p><strong>Nombre Completo:</strong> ${p.nombre} ${p.apellido}</p>
-          <p><strong>Cédula:</strong> ${p.cedula}</p>
-          <p><strong>Teléfono:</strong> ${p.telefono || '-'}</p>
-          <p><strong>Email:</strong> ${p.email || '-'}</p>
-          <p><strong>Dirección:</strong> ${p.direccion || '-'}</p>
-          <p><strong>Fecha de Nacimiento:</strong> ${p.fecha_nacimiento || '-'}</p>
-          <p><strong>Historial Médico:</strong><br>${p.historial_medico || 'Sin historial registrado'}</p>
-        `;
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    function limpiarFormPaciente() {
-      ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial','pPassword'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('editPacienteId').value = '';
-      document.getElementById('btnCancelarEditar').style.display = 'none';
-    }
-
-    async function crearPaciente() {
-      const body = {
-        nombre: document.getElementById('pNombre').value,
-        apellido: document.getElementById('pApellido').value,
-        cedula: document.getElementById('pCedula').value,
-        password: document.getElementById('pPassword').value || '123456',
-        fecha_nacimiento: document.getElementById('pFechaNac').value,
-        telefono: document.getElementById('pTelefono').value,
-        email: document.getElementById('pEmail').value,
-        direccion: document.getElementById('pDireccion').value,
-        historial_medico: document.getElementById('pHistorial').value,
-      };
-      const editId = document.getElementById('editPacienteId').value;
-      try {
-        if (editId) {
-          await api('PUT', `/pacientes/${editId}`, body);
-          mostrarToast('Paciente actualizado');
-        } else {
-          await api('POST', '/pacientes', body);
-          mostrarToast('Paciente creado');
-        }
-        limpiarFormPaciente();
-        cargarPacientes();
-        cargarSelectPacientes();
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    async function editarPaciente(id) {
-      try {
-        const p = await api('GET', `/pacientes/${id}`);
-        document.getElementById('pNombre').value = p.nombre;
-        document.getElementById('pApellido').value = p.apellido;
-        document.getElementById('pCedula').value = p.cedula;
-        document.getElementById('pFechaNac').value = p.fecha_nacimiento || '';
-        document.getElementById('pTelefono').value = p.telefono || '';
-        document.getElementById('pEmail').value = p.email || '';
-        document.getElementById('pDireccion').value = p.direccion || '';
-        document.getElementById('pHistorial').value = p.historial_medico || '';
-        document.getElementById('pPassword').value = p.password || '';
-        document.getElementById('editPacienteId').value = id;
-        document.getElementById('btnCancelarEditar').style.display = 'inline-block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    async function eliminarPaciente(id) {
-      if (!confirm('¿Eliminar este paciente y todas sus recetas?')) return;
-      try {
-        await api('DELETE', `/pacientes/${id}`);
-        mostrarToast('Paciente eliminado');
-        cargarPacientes();
-        cargarSelectPacientes();
-        document.getElementById('recetasSection').style.display = 'none';
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    async function cargarSelectPacientes() {
-      try {
-        const lista = await api('GET', '/pacientes');
-        const sel = document.getElementById('rPacienteId');
-        sel.innerHTML = lista.map(p => `<option value="${p.id}">${p.nombre} ${p.apellido} - ${p.cedula}</option>`).join('');
-      } catch (e) { /* ignore */ }
-    }
-
-    function limpiarFormReceta() {
-      ['rMedicamento','rDosis','rFrecuencia','rDuracion','rDoctor','rNotas'].forEach(id => document.getElementById(id).value = '');
-      recetaEditandoId = null;
-    }
-
-    async function crearReceta() {
-      const body = {
-        paciente_id: parseInt(document.getElementById('rPacienteId').value),
-        medicamento: document.getElementById('rMedicamento').value,
-        dosis: document.getElementById('rDosis').value,
-        frecuencia: document.getElementById('rFrecuencia').value,
-        duracion: document.getElementById('rDuracion').value,
-        doctor: document.getElementById('rDoctor').value,
-        notas: document.getElementById('rNotas').value,
-      };
-      try {
-        if (recetaEditandoId) {
-          await api('PUT', `/recetas/${recetaEditandoId}`, body);
-          mostrarToast('Receta actualizada');
-        } else {
-          await api('POST', '/recetas', body);
-          mostrarToast('Receta creada');
-        }
-        limpiarFormReceta();
-        const pid = document.getElementById('rPacienteId').value;
-        if (document.getElementById('recetasSection').style.display !== 'none') {
-          verRecetas(parseInt(pid) || parseInt(document.getElementById('recetasSection').dataset.pacienteId));
-        }
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    async function verRecetas(pacienteId) {
-      try {
-        const p = await api('GET', `/pacientes/${pacienteId}`);
-        document.getElementById('recetasPacienteNombre').textContent = `${p.nombre} ${p.apellido}`;
-        const recetas = await api('GET', `/pacientes/${pacienteId}/recetas`);
-        const tbody = document.getElementById('tablaRecetas');
-        tbody.innerHTML = recetas.map(r => `
-          <tr>
-            <td>${r.id}</td>
-            <td>${r.medicamento}</td>
-            <td>${r.dosis}</td>
-            <td>${r.frecuencia}</td>
-            <td>${r.doctor || '-'}</td>
-            <td>${r.fecha_emision}</td>
-            <td class="acciones ${userRole === 'paciente' ? 'hidden' : ''}">
-              <button class="btn btn-warning" onclick="editarReceta(${r.id})">Editar</button>
-              <button class="btn btn-danger" onclick="eliminarReceta(${r.id})">Eliminar</button>
-            </td>
-          </tr>
-        `).join('');
-        document.getElementById('recetasSection').style.display = 'block';
-        document.getElementById('recetasSection').dataset.pacienteId = pacienteId;
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    async function editarReceta(id) {
-      try {
-        const r = await api('GET', `/recetas/${id}`);
-        document.getElementById('rPacienteId').value = r.paciente_id;
-        document.getElementById('rMedicamento').value = r.medicamento;
-        document.getElementById('rDosis').value = r.dosis;
-        document.getElementById('rFrecuencia').value = r.frecuencia;
-        document.getElementById('rDuracion').value = r.duracion || '';
-        document.getElementById('rDoctor').value = r.doctor || '';
-        document.getElementById('rNotas').value = r.notas || '';
-        recetaEditandoId = id;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-
-    async function eliminarReceta(id) {
-      if (!confirm('¿Eliminar esta receta?')) return;
-      try {
-        await api('DELETE', `/recetas/${id}`);
-        mostrarToast('Receta eliminada');
-        const pid = document.getElementById('recetasSection').dataset.pacienteId;
-        if (pid) verRecetas(parseInt(pid));
-      } catch (e) { mostrarToast(e.message, 'error'); }
-    }
-  </script>
+  async function eliminarReceta(id) {
+    if (!confirm('¿Eliminar esta receta?')) return;
+    try { await api('DELETE', `/recetas/${id}`); toast('Receta eliminada'); const pid = document.getElementById('recetasSection').dataset.pacienteId; if (pid) verRecetas(parseInt(pid)); } catch (e) { toast(e.message, 'error'); }
+  }
+</script>
 </body>
 </html>

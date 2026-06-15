@@ -115,6 +115,27 @@ app.post('/auth/logout', (req, res) => {
   res.json({ mensaje: 'Sesión cerrada' });
 });
 
+app.post('/auth/register', async (req, res) => {
+  const { nombre, apellido, cedula, password, fecha_nacimiento, telefono, email, direccion } = req.body;
+  if (!nombre || !apellido || !cedula || !password) {
+    return res.status(400).json({ error: 'nombre, apellido, cedula y password son obligatorios' });
+  }
+  try {
+    const result = await pool.query(
+      `INSERT INTO pacientes (nombre, apellido, cedula, password, fecha_nacimiento, telefono, email, direccion)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, nombre, apellido`,
+      [nombre, apellido, cedula, password, fecha_nacimiento || null, telefono || null, email || null, direccion || null]
+    );
+    const p = result.rows[0];
+    const token = crypto.randomBytes(20).toString('hex');
+    sesiones.set(token, { id: p.id, role: 'paciente', nombre: `${p.nombre} ${p.apellido}` });
+    res.status(201).json({ token, role: 'paciente', nombre: p.nombre, mensaje: 'Registrado exitosamente' });
+  } catch (err) {
+    if (err.code === '23505') return res.status(400).json({ error: 'La cédula ya está registrada' });
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/pacientes', authMiddleware, async (req, res) => {
   try {
     if (req.user.role === 'doctor') {
