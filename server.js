@@ -11,8 +11,6 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL_NON_POOLING,
 });
@@ -31,6 +29,7 @@ async function initDB() {
           direccion TEXT,
           telefono TEXT,
           email TEXT,
+          password TEXT,
           historial_medico TEXT,
           created_at TIMESTAMPTZ DEFAULT NOW(),
           updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -57,39 +56,76 @@ async function initDB() {
     }
   } catch (err) {
     console.error('Error crítico en initDB:', err.message);
-    // En Vercel no queremos que el proceso muera, solo loguear el error
   }
 }
 
-let tokenValido = null;
+// Gestión de sesiones: token -> { id, role }
+const sesiones = new Map();
 
 function authMiddleware(req, res, next) {
-  if (!tokenValido) return res.status(401).json({ error: 'No hay sesión activa. Use POST /auth/login' });
   const authHeader = req.headers['authorization'];
-  if (!authHeader || authHeader !== `Bearer ${tokenValido}`) {
-    return res.status(401).json({ error: 'Token inválido o ausente' });
-  }
+  if (!authHeader) return res.status(401).json({ error: 'Token ausente' });
+  
+  const token = authHeader.split(' ')[1];
+  const session = sesiones.get(token);
+  
+  if (!session) return res.status(401).json({ error: 'Sesión inválida o expirada' });
+  
+  req.user = session;
   next();
 }
 
-app.post('/auth/login', (req, res) => {
+app.post('/auth/login', async (req, res) => {
   const { usuario, clave } = req.body;
+  
+  // Login Admin/Doctor
   if (usuario === 'admin' && clave === 'admin123') {
-    tokenValido = crypto.randomBytes(20).toString('hex');
-    return res.json({ token: tokenValido, mensaje: 'Autenticación exitosa' });
+    const token = crypto.randomBytes(20).toString('hex');
+    sesiones.set(token, { id: 0, role: 'doctor' });
+    return res.json({ token, role: 'doctor', mensaje: 'Bienvenido Doctor' });
   }
-  res.status(401).json({ error: 'Credenciales inválidas' });
+  
+  // Login Paciente (usando cédula como usuario)
+  try {
+    const result = await pool.query(
+      'SELECT id, nombre, apellido FROM pacientes WHERE cedula = $1 AND password = $2',
+      [usuario, clave]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Cédula o contraseña incorrecta' });
+    }
+    
+    const paciente = result.rows[0];
+    const token = crypto.randomBytes(20).toString('hex');
+    sesiones.set(token, { id: paciente.id, role: 'paciente', nombre: `${paciente.nombre} ${paciente.apellido}` });
+    
+    return res.json({ token, role: 'paciente', nombre: paciente.nombre, mensaje: `Bienvenido ${paciente.nombre}` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.post('/auth/logout', (req, res) => {
-  tokenValido = null;
+  const authHeader = req.headers['authorization'];
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+    sesiones.delete(token);
+  }
   res.json({ mensaje: 'Sesión cerrada' });
 });
 
 app.get('/pacientes', authMiddleware, async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM pacientes ORDER BY created_at DESC');
-    res.json(result.rows);
+    if (req.user.role === 'doctor') {
+      const result = await pool.query('SELECT id, nombre, apellido, cedula, telefono FROM pacientes ORDER BY created_at DESC');
+      res.json(result.rows);
+    } else {
+      // Paciente solo puede verse a sí mismo
+      const result = await pool.query('SELECT * FROM pacientes WHERE id = $1', [req.user.id]);
+      if (result.rows.length === 0) return res.status(404).json({ error: 'Paciente no encontrado' });
+      res.json(result.rows);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -97,24 +133,31 @@ app.get('/pacientes', authMiddleware, async (req, res) => {
 
 app.get('/pacientes/:id', authMiddleware, async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM pacientes WHERE id = $1', [req.params.id]);
-    if (result.rows.length === 0) return res.status(404).json({ error: 'Paciente no encontrado' });
-    res.json(result.rows[0]);
+    const targetId = parseInt(req.params.id);
+    if (req.user.role === 'doctor' || (req.user.role === 'paciente' && req.user.id === targetId)) {
+      const result = await pool.query('SELECT * FROM pacientes WHERE id = $1', [targetId]);
+      if (result.rows.length === 0) return res.status(404).json({ error: 'Paciente no encontrado' });
+      res.json(result.rows[0]);
+    } else {
+      res.status(403).json({ error: 'No tienes permiso para ver este paciente' });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 app.post('/pacientes', authMiddleware, async (req, res) => {
-  const { nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, historial_medico } = req.body;
+  if (req.user.role !== 'doctor') return res.status(403).json({ error: 'Solo los doctores pueden registrar pacientes' });
+  
+  const { nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, password, historial_medico } = req.body;
   if (!nombre || !apellido || !cedula) {
     return res.status(400).json({ error: 'nombre, apellido y cedula son obligatorios' });
   }
   try {
     const result = await pool.query(
-      `INSERT INTO pacientes (nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, historial_medico)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id`,
-      [nombre, apellido, cedula, fecha_nacimiento || null, direccion || null, telefono || null, email || null, historial_medico || null]
+      `INSERT INTO pacientes (nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, password, historial_medico)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id`,
+      [nombre, apellido, cedula, fecha_nacimiento || null, direccion || null, telefono || null, email || null, password || '123456', historial_medico || null]
     );
     res.status(201).json({ id: result.rows[0].id, mensaje: 'Paciente creado' });
   } catch (err) {
@@ -124,11 +167,13 @@ app.post('/pacientes', authMiddleware, async (req, res) => {
 });
 
 app.put('/pacientes/:id', authMiddleware, async (req, res) => {
-  const { nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, historial_medico } = req.body;
+  if (req.user.role !== 'doctor') return res.status(403).json({ error: 'Solo los doctores pueden editar pacientes' });
+  
+  const { nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, password, historial_medico } = req.body;
   try {
     const result = await pool.query(
-      `UPDATE pacientes SET nombre=$1, apellido=$2, cedula=$3, fecha_nacimiento=$4, direccion=$5, telefono=$6, email=$7, historial_medico=$8, updated_at=NOW() WHERE id=$9 RETURNING id`,
-      [nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, historial_medico, req.params.id]
+      `UPDATE pacientes SET nombre=$1, apellido=$2, cedula=$3, fecha_nacimiento=$4, direccion=$5, telefono=$6, email=$7, password=$8, historial_medico=$9, updated_at=NOW() WHERE id=$10 RETURNING id`,
+      [nombre, apellido, cedula, fecha_nacimiento, direccion, telefono, email, password, historial_medico, req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Paciente no encontrado' });
     res.json({ mensaje: 'Paciente actualizado' });
@@ -138,6 +183,7 @@ app.put('/pacientes/:id', authMiddleware, async (req, res) => {
 });
 
 app.delete('/pacientes/:id', authMiddleware, async (req, res) => {
+  if (req.user.role !== 'doctor') return res.status(403).json({ error: 'Solo los doctores pueden eliminar pacientes' });
   try {
     const result = await pool.query('DELETE FROM pacientes WHERE id = $1 RETURNING id', [req.params.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'Paciente no encontrado' });
@@ -149,17 +195,24 @@ app.delete('/pacientes/:id', authMiddleware, async (req, res) => {
 
 app.get('/pacientes/:id/recetas', authMiddleware, async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT * FROM recetas WHERE paciente_id = $1 ORDER BY fecha_emision DESC',
-      [req.params.id]
-    );
-    res.json(result.rows);
+    const targetId = parseInt(req.params.id);
+    if (req.user.role === 'doctor' || (req.user.role === 'paciente' && req.user.id === targetId)) {
+      const result = await pool.query(
+        'SELECT * FROM recetas WHERE paciente_id = $1 ORDER BY fecha_emision DESC',
+        [targetId]
+      );
+      res.json(result.rows);
+    } else {
+      res.status(403).json({ error: 'No tienes permiso para ver estas recetas' });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 app.post('/recetas', authMiddleware, async (req, res) => {
+  if (req.user.role !== 'doctor') return res.status(403).json({ error: 'Solo los doctores pueden crear recetas' });
+  
   const { paciente_id, medicamento, dosis, frequencia, duracion, doctor, notas } = req.body;
   const frecuencia = req.body.frecuencia || frequencia;
   if (!paciente_id || !medicamento || !dosis || !frecuencia) {
@@ -180,6 +233,8 @@ app.post('/recetas', authMiddleware, async (req, res) => {
 });
 
 app.put('/recetas/:id', authMiddleware, async (req, res) => {
+  if (req.user.role !== 'doctor') return res.status(403).json({ error: 'Solo los doctores pueden editar recetas' });
+  
   const { medicamento, dosis, frequencia, duracion, doctor, notas } = req.body;
   const frecuencia = req.body.frecuencia || frequencia;
   try {
@@ -194,21 +249,27 @@ app.put('/recetas/:id', authMiddleware, async (req, res) => {
   }
 });
 
-app.get('/recetas/:id', authMiddleware, async (req, res) => {
+app.delete('/recetas/:id', authMiddleware, async (req, res) => {
+  if (req.user.role !== 'doctor') return res.status(403).json({ error: 'Solo los doctores pueden eliminar recetas' });
   try {
-    const result = await pool.query('SELECT * FROM recetas WHERE id = $1', [req.params.id]);
+    const result = await pool.query('DELETE FROM recetas WHERE id = $1 RETURNING id', [req.params.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'Receta no encontrada' });
-    res.json(result.rows[0]);
+    res.json({ mensaje: 'Receta eliminada' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.delete('/recetas/:id', authMiddleware, async (req, res) => {
+app.get('/recetas/:id', authMiddleware, async (req, res) => {
   try {
-    const result = await pool.query('DELETE FROM recetas WHERE id = $1 RETURNING id', [req.params.id]);
+    const result = await pool.query('SELECT * FROM recetas WHERE id = $1', [req.params.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'Receta no encontrada' });
-    res.json({ mensaje: 'Receta eliminada' });
+    const receta = result.rows[0];
+    if (req.user.role === 'doctor' || (req.user.role === 'paciente' && receta.paciente_id === req.user.id)) {
+      res.json(receta);
+    } else {
+      res.status(403).json({ error: 'No tienes permiso para ver esta receta' });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

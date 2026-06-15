@@ -51,6 +51,7 @@
     .toast-success { background: #38a169; }
     .toast-error { background: #e53e3e; }
     @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .info-box { background: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
   </style>
 </head>
 <body>
@@ -64,12 +65,12 @@
     <div id="loginForm" class="card">
       <h2>Iniciar Sesión</h2>
       <div class="form-group">
-        <label>Usuario</label>
-        <input type="text" id="loginUsuario" value="admin">
+        <label>Usuario / Cédula</label>
+        <input type="text" id="loginUsuario" placeholder="admin o Cédula">
       </div>
       <div class="form-group">
         <label>Clave</label>
-        <input type="password" id="loginClave" value="admin123">
+        <input type="password" id="loginClave" placeholder="admin123 o Contraseña">
       </div>
       <button class="btn btn-primary" onclick="login()">Ingresar</button>
       <span id="loginError" style="color:#e53e3e;margin-left:10px;font-size:0.85rem;"></span>
@@ -81,95 +82,114 @@
         <button class="btn btn-secondary" onclick="logout()">Cerrar Sesión</button>
       </div>
 
-      <div class="grid">
-        <div class="card">
-          <h2>Registrar Paciente</h2>
-          <div class="form-group">
-            <label>Nombre *</label>
-            <input type="text" id="pNombre">
+      <div id="doctorView" class="hidden">
+        <div class="grid">
+          <div class="card">
+            <h2>Registrar Paciente</h2>
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" id="pNombre">
+            </div>
+            <div class="form-group">
+              <label>Apellido *</label>
+              <input type="text" id="pApellido">
+            </div>
+            <div class="form-group">
+              <label>Cédula *</label>
+              <input type="text" id="pCedula">
+            </div>
+            <div class="form-group">
+              <label>Contraseña *</label>
+              <input type="password" id="pPassword" value="123456">
+            </div>
+            <div class="form-group">
+              <label>Fecha de Nacimiento</label>
+              <input type="date" id="pFechaNac">
+            </div>
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input type="text" id="pTelefono">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="pEmail">
+            </div>
+            <div class="form-group">
+              <label>Dirección</label>
+              <input type="text" id="pDireccion">
+            </div>
+            <div class="form-group">
+              <label>Historial Médico</label>
+              <textarea id="pHistorial" rows="3"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="crearPaciente()">Guardar Paciente</button>
+            <button class="btn btn-secondary" onclick="limpiarFormPaciente()" style="display:none;" id="btnCancelarEditar">Cancelar</button>
+            <input type="hidden" id="editPacienteId" value="">
           </div>
-          <div class="form-group">
-            <label>Apellido *</label>
-            <input type="text" id="pApellido">
+
+          <div class="card">
+            <h2>Crear Receta</h2>
+            <div class="form-group">
+              <label>Paciente *</label>
+              <select id="rPacienteId"></select>
+            </div>
+            <div class="form-group">
+              <label>Medicamento *</label>
+              <input type="text" id="rMedicamento">
+            </div>
+            <div class="form-group">
+              <label>Dosis *</label>
+              <input type="text" id="rDosis" placeholder="Ej: 500mg">
+            </div>
+            <div class="form-group">
+              <label>Frecuencia *</label>
+              <input type="text" id="rFrecuencia" placeholder="Ej: Cada 8 horas">
+            </div>
+            <div class="form-group">
+              <label>Duración</label>
+              <input type="text" id="rDuracion" placeholder="Ej: 7 días">
+            </div>
+            <div class="form-group">
+              <label>Doctor</label>
+              <input type="text" id="rDoctor">
+            </div>
+            <div class="form-group">
+              <label>Notas</label>
+              <textarea id="rNotas" rows="2"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="crearReceta()">Guardar Receta</button>
           </div>
-          <div class="form-group">
-            <label>Cédula *</label>
-            <input type="text" id="pCedula">
-          </div>
-          <div class="form-group">
-            <label>Fecha de Nacimiento</label>
-            <input type="date" id="pFechaNac">
-          </div>
-          <div class="form-group">
-            <label>Teléfono</label>
-            <input type="text" id="pTelefono">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="pEmail">
-          </div>
-          <div class="form-group">
-            <label>Dirección</label>
-            <input type="text" id="pDireccion">
-          </div>
-          <div class="form-group">
-            <label>Historial Médico</label>
-            <textarea id="pHistorial" rows="3"></textarea>
-          </div>
-          <button class="btn btn-primary" onclick="crearPaciente()">Guardar Paciente</button>
-          <button class="btn btn-secondary" onclick="limpiarFormPaciente()" style="display:none;" id="btnCancelarEditar">Cancelar</button>
-          <input type="hidden" id="editPacienteId" value="">
         </div>
 
         <div class="card">
-          <h2>Crear Receta</h2>
-          <div class="form-group">
-            <label>Paciente *</label>
-            <select id="rPacienteId"></select>
+          <h2>Pacientes Registrados</h2>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Cédula</th>
+                  <th>Teléfono</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaPacientes"></tbody>
+            </table>
           </div>
-          <div class="form-group">
-            <label>Medicamento *</label>
-            <input type="text" id="rMedicamento">
-          </div>
-          <div class="form-group">
-            <label>Dosis *</label>
-            <input type="text" id="rDosis" placeholder="Ej: 500mg">
-          </div>
-          <div class="form-group">
-            <label>Frecuencia *</label>
-            <input type="text" id="rFrecuencia" placeholder="Ej: Cada 8 horas">
-          </div>
-          <div class="form-group">
-            <label>Duración</label>
-            <input type="text" id="rDuracion" placeholder="Ej: 7 días">
-          </div>
-          <div class="form-group">
-            <label>Doctor</label>
-            <input type="text" id="rDoctor">
-          </div>
-          <div class="form-group">
-            <label>Notas</label>
-            <textarea id="rNotas" rows="2"></textarea>
-          </div>
-          <button class="btn btn-primary" onclick="crearReceta()">Guardar Receta</button>
         </div>
       </div>
 
-      <div class="card">
-        <h2>Pacientes Registrados</h2>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Cédula</th>
-                <th>Teléfono</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tablaPacientes"></tbody>
-          </table>
+      <div id="pacienteView" class="hidden">
+        <div class="info-box">
+          <h2>Hola, <span id="pNombreBienvenida"></span> 👋</h2>
+          <p>Bienvenido a tu portal de salud. Aquí puedes consultar tu historia clínica y tus recetas médicas.</p>
+        </div>
+        <div class="card">
+          <h2>Mi Información Personal</h2>
+          <div id="miInfo" style="font-size: 0.9rem; line-height: 1.6;">
+            <!-- Cargado dinámicamente -->
+          </div>
         </div>
       </div>
 
@@ -185,7 +205,7 @@
                 <th>Frecuencia</th>
                 <th>Doctor</th>
                 <th>Fecha</th>
-                <th>Acciones</th>
+                <th class="col-doctor">Acciones</th>
               </tr>
             </thead>
             <tbody id="tablaRecetas"></tbody>
@@ -197,6 +217,8 @@
 
   <script>
     let token = null;
+    let userRole = null;
+    let currentUser = null;
     let pacientes = [];
     let recetaEditandoId = null;
 
@@ -232,12 +254,23 @@
         }).then(r => r.json());
         if (data.token) {
           token = data.token;
+          userRole = data.role;
+          currentUser = data;
           document.getElementById('loginForm').classList.add('hidden');
           document.getElementById('appContent').classList.remove('hidden');
-          document.getElementById('tokenStatus').textContent = 'Sesión activa';
+          document.getElementById('tokenStatus').textContent = `Sesión: ${userRole}`;
           mostrarToast('Inicio de sesión exitoso');
-          cargarPacientes();
-          cargarSelectPacientes();
+          
+          if (userRole === 'doctor') {
+            document.getElementById('doctorView').classList.remove('hidden');
+            cargarPacientes();
+            cargarSelectPacientes();
+          } else {
+            document.getElementById('pacienteView').classList.remove('hidden');
+            document.getElementById('pNombreBienvenida').textContent = data.nombre || 'Paciente';
+            cargarMiInfo();
+            verRecetas(currentUser.id);
+          }
         } else {
           document.getElementById('loginError').textContent = data.error || 'Error';
         }
@@ -248,8 +281,13 @@
 
     function logout() {
       token = null;
+      userRole = null;
+      currentUser = null;
       document.getElementById('loginForm').classList.remove('hidden');
       document.getElementById('appContent').classList.add('hidden');
+      document.getElementById('doctorView').classList.add('hidden');
+      document.getElementById('pacienteView').classList.add('hidden');
+      document.getElementById('recetasSection').style.display = 'none';
       document.getElementById('loginError').textContent = '';
       document.getElementById('tokenStatus').textContent = '';
       mostrarToast('Sesión cerrada');
@@ -275,8 +313,23 @@
       } catch (e) { mostrarToast(e.message, 'error'); }
     }
 
+    async function cargarMiInfo() {
+      try {
+        const p = await api('GET', `/pacientes/${currentUser.id}`);
+        document.getElementById('miInfo').innerHTML = `
+          <p><strong>Nombre Completo:</strong> ${p.nombre} ${p.apellido}</p>
+          <p><strong>Cédula:</strong> ${p.cedula}</p>
+          <p><strong>Teléfono:</strong> ${p.telefono || '-'}</p>
+          <p><strong>Email:</strong> ${p.email || '-'}</p>
+          <p><strong>Dirección:</strong> ${p.direccion || '-'}</p>
+          <p><strong>Fecha de Nacimiento:</strong> ${p.fecha_nacimiento || '-'}</p>
+          <p><strong>Historial Médico:</strong><br>${p.historial_medico || 'Sin historial registrado'}</p>
+        `;
+      } catch (e) { mostrarToast(e.message, 'error'); }
+    }
+
     function limpiarFormPaciente() {
-      ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial'].forEach(id => document.getElementById(id).value = '');
+      ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial','pPassword'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('editPacienteId').value = '';
       document.getElementById('btnCancelarEditar').style.display = 'none';
     }
@@ -286,6 +339,7 @@
         nombre: document.getElementById('pNombre').value,
         apellido: document.getElementById('pApellido').value,
         cedula: document.getElementById('pCedula').value,
+        password: document.getElementById('pPassword').value || '123456',
         fecha_nacimiento: document.getElementById('pFechaNac').value,
         telefono: document.getElementById('pTelefono').value,
         email: document.getElementById('pEmail').value,
@@ -318,6 +372,7 @@
         document.getElementById('pEmail').value = p.email || '';
         document.getElementById('pDireccion').value = p.direccion || '';
         document.getElementById('pHistorial').value = p.historial_medico || '';
+        document.getElementById('pPassword').value = p.password || '';
         document.getElementById('editPacienteId').value = id;
         document.getElementById('btnCancelarEditar').style.display = 'inline-block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -388,7 +443,7 @@
             <td>${r.frecuencia}</td>
             <td>${r.doctor || '-'}</td>
             <td>${r.fecha_emision}</td>
-            <td class="acciones">
+            <td class="acciones ${userRole === 'paciente' ? 'hidden' : ''}">
               <button class="btn btn-warning" onclick="editarReceta(${r.id})">Editar</button>
               <button class="btn btn-danger" onclick="eliminarReceta(${r.id})">Eliminar</button>
             </td>
@@ -401,11 +456,7 @@
 
     async function editarReceta(id) {
       try {
-        const res = await fetch(`/recetas/${id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error('Error al obtener receta');
-        const r = await res.json();
+        const r = await api('GET', `/recetas/${id}`);
         document.getElementById('rPacienteId').value = r.paciente_id;
         document.getElementById('rMedicamento').value = r.medicamento;
         document.getElementById('rDosis').value = r.dosis;
