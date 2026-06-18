@@ -308,4 +308,4 @@ initDB().then(() => {
   console.error('Error inicializando DB:', err.message);
 });
 
-// Vercel Node.js Server Entrypoint - no export needed
+module.exports = app;
