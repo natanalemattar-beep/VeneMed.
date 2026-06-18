@@ -3,202 +3,218 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeneMed - Sistema de Salud Soberano</title>
+  <title>VeneMed — Salud Soberana</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --primary: #2563eb; --primary-dark: #1e3a5f; --primary-light: #3b82f6;
-      --primary-bg: #eff6ff; --accent: #f59e0b; --accent-dark: #d97706;
-      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
-      --bg: #f1f5f9; --surface: #ffffff; --surface-hover: #f8fafc;
-      --text: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8;
-      --border: #e2e8f0; --border-light: #f1f5f9;
-      --radius: 16px; --radius-sm: 10px; --radius-full: 9999px;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
-      --shadow-xl: 0 25px 60px rgba(0,0,0,0.15);
-      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --bg: #f8fafc; --surface: #ffffff; --surface-hover: #f1f5f9;
+      --text: #0f172a; --text-2: #334155; --text-3: #64748b; --text-4: #94a3b8;
+      --border: #e2e8f0; --border-2: #f1f5f9;
+      --primary: #2563eb; --primary-dark: #1d4ed8; --primary-deeper: #1e3a8a; --primary-light: #3b82f6; --primary-faint: #eff6ff;
+      --accent: #f59e0b; --accent-dark: #d97706; --accent-light: #fef3c7;
+      --success: #10b981; --success-light: #d1fae5;
+      --danger: #ef4444; --danger-light: #fee2e2;
+      --radius: 16px; --radius-sm: 10px; --radius-xs: 8px; --radius-full: 9999px;
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.1);
+      --shadow-xl: 0 30px 80px rgba(0,0,0,0.12);
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden; }
+    ::selection { background: var(--primary); color: white; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-4); border-radius: 3px; }
 
     /* ===== LANDING ===== */
-    #landing { min-height: 100vh; background: linear-gradient(135deg, #0c1833 0%, #1a365d 35%, #1e4d7a 60%, #1a365d 100%); position: relative; overflow: hidden; isolation: isolate; }
-    #landing .bg-grid { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.6; }
-    #landing .bg-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.1) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.05) 0%, transparent 50%); pointer-events: none; }
+    #landing { position: relative; min-height: 100vh; background: #0a0f1e; overflow: hidden; isolation: isolate; }
+    #landing .noise { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); background-size: 256px; pointer-events: none; z-index: 1; }
+    #landing .gradient-orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
+    #landing .orb-1 { width: 600px; height: 600px; background: rgba(37,99,235,0.15); top: -200px; right: -100px; animation: orbFloat 20s ease-in-out infinite; }
+    #landing .orb-2 { width: 500px; height: 500px; background: rgba(245,158,11,0.08); bottom: -150px; left: -100px; animation: orbFloat 25s ease-in-out infinite reverse; }
+    @keyframes orbFloat { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-30px) scale(1.05); } 66% { transform: translate(-20px,20px) scale(0.95); } }
 
-    .landing-nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 18px 32px; max-width: 1200px; margin: 0 auto; }
+    .landing-nav { position: relative; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; max-width: 1280px; margin: 0 auto; }
     .landing-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .landing-logo .icon-wrap { width: 42px; height: 42px; background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-    .landing-logo .text { color: white; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px; }
+    .landing-logo .icon-wrap { width: 44px; height: 44px; background: rgba(255,255,255,0.08); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06); }
+    .landing-logo .text { color: white; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
     .landing-logo .text span { color: #93c5fd; }
     .landing-buttons { display: flex; gap: 10px; }
 
-    .btn-l { padding: 10px 24px; border-radius: var(--radius-full); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: var(--transition); border: none; }
-    .btn-l-ghost { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.2) !important; }
-    .btn-l-ghost:hover { border-color: white !important; background: rgba(255,255,255,0.08); transform: translateY(-2px); }
-    .btn-l-primary { background: white; color: var(--primary-dark); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .btn-l-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+    .btn-l { padding: 10px 24px; border-radius: var(--radius-full); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.4s var(--ease); border: none; position: relative; overflow: hidden; }
+    .btn-l-ghost { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.12) !important; }
+    .btn-l-ghost:hover { border-color: rgba(255,255,255,0.4) !important; color: white; transform: translateY(-2px); }
+    .btn-l-primary { background: white; color: #0a0f1e; box-shadow: 0 4px 20px rgba(255,255,255,0.1); }
+    .btn-l-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.15); }
 
-    .hero { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; padding: 60px 20px 50px; text-align: center; }
-    .hero-content { max-width: 750px; }
-    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); padding: 6px 16px 6px 6px; border-radius: var(--radius-full); font-size: 0.78rem; color: rgba(255,255,255,0.8); margin-bottom: 28px; border: 1px solid rgba(255,255,255,0.08); }
-    .hero-badge .dot { width: 8px; height: 8px; background: #34d399; border-radius: 50%; display: inline-block; margin-right: 4px; animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .hero h1 { color: white; font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1px; }
-    .hero h1 span { background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero p { color: rgba(255,255,255,0.65); font-size: clamp(0.95rem, 1.4vw, 1.1rem); line-height: 1.7; margin-bottom: 36px; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .hero { position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; padding: 80px 20px 60px; text-align: center; }
+    .hero-content { max-width: 780px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.04); backdrop-filter: blur(20px); padding: 6px 16px 6px 6px; border-radius: var(--radius-full); font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-bottom: 32px; border: 1px solid rgba(255,255,255,0.06); }
+    .hero-badge .dot { width: 6px; height: 6px; background: #34d399; border-radius: 50%; display: inline-block; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.5); } 50% { opacity: 0.6; box-shadow: 0 0 0 8px rgba(52,211,153,0); } }
+    .hero h1 { color: white; font-size: clamp(2.6rem, 6vw, 4.8rem); font-weight: 900; line-height: 1.05; margin-bottom: 24px; letter-spacing: -1.5px; }
+    .hero h1 span { background: linear-gradient(135deg, #fbbf24, #f59e0b, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; background-size: 200% 200%; animation: shimmer 4s ease-in-out infinite; }
+    @keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .hero p { color: rgba(255,255,255,0.45); font-size: clamp(0.95rem, 1.4vw, 1.15rem); line-height: 1.8; margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto; font-weight: 400; }
     .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-hero { padding: 15px 36px; border-radius: var(--radius-full); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); border: none; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-hero-primary { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #0c1833; box-shadow: 0 8px 30px rgba(245,158,11,0.35); }
-    .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(245,158,11,0.45); }
-    .btn-hero-secondary { background: rgba(255,255,255,0.08); color: white; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12) !important; }
-    .btn-hero-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-3px); }
+    .btn-hero { padding: 16px 38px; border-radius: var(--radius-full); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.4s var(--ease); border: none; display: inline-flex; align-items: center; gap: 10px; position: relative; overflow: hidden; }
+    .btn-hero::after { content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity 0.4s var(--ease); }
+    .btn-hero-primary { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #0a0f1e; box-shadow: 0 8px 32px rgba(245,158,11,0.35); }
+    .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 48px rgba(245,158,11,0.5); }
+    .btn-hero-secondary { background: rgba(255,255,255,0.06); color: white; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08) !important; }
+    .btn-hero-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
 
-    .stats-bar { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 640px; margin: 36px auto 0; padding: 0 20px; background: rgba(255,255,255,0.06); border-radius: var(--radius); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.06); }
-    .stats-bar .s-item { padding: 24px 20px; text-align: center; }
-    .stats-bar .s-item+.s-item { border-left: 1px solid rgba(255,255,255,0.06); }
-    .stats-bar .num { color: white; font-size: 1.8rem; font-weight: 800; }
-    .stats-bar .lbl { color: rgba(255,255,255,0.45); font-size: 0.75rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
+    .hero-stats { position: relative; z-index: 10; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 640px; margin: 48px auto 0; padding: 0 20px; background: rgba(255,255,255,0.03); border-radius: var(--radius); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.04); }
+    .hero-stats .hs-item { padding: 28px 20px; text-align: center; }
+    .hero-stats .hs-item+.hs-item { border-left: 1px solid rgba(255,255,255,0.04); }
+    .hero-stats .num { color: white; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+    .hero-stats .lbl { color: rgba(255,255,255,0.3); font-size: 0.72rem; margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
 
-    .features { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1050px; margin: 50px auto 0; padding: 0 20px 60px; }
-    @media (max-width: 768px) { .features { grid-template-columns: 1fr; } .stats-bar { grid-template-columns: 1fr; } .stats-bar .s-item+.s-item { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); } .landing-nav { flex-wrap: wrap; gap: 12px; justify-content: center; } }
-    .f-card { background: rgba(255,255,255,0.04); backdrop-filter: blur(15px); border-radius: var(--radius); padding: 32px 24px; border: 1px solid rgba(255,255,255,0.06); transition: var(--transition); }
-    .f-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
-    .f-card .fi { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 18px; background: rgba(255,255,255,0.08); }
-    .f-card h3 { color: white; font-size: 1rem; margin-bottom: 8px; font-weight: 700; }
-    .f-card p { color: rgba(255,255,255,0.5); font-size: 0.85rem; line-height: 1.6; }
+    .features { position: relative; z-index: 10; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1050px; margin: 60px auto 0; padding: 0 20px 60px; }
+    @media (max-width: 768px) { .features { grid-template-columns: 1fr; } .hero-stats { grid-template-columns: 1fr; } .hero-stats .hs-item+.hs-item { border-left: none; border-top: 1px solid rgba(255,255,255,0.04); } .landing-nav { flex-wrap: wrap; gap: 12px; justify-content: center; } }
+    @media (max-width: 480px) { .hero { padding: 40px 16px 40px; } .hero h1 { font-size: 1.8rem; } }
+    .f-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border-radius: var(--radius); padding: 36px 28px; border: 1px solid rgba(255,255,255,0.04); transition: all 0.5s var(--ease); }
+    .f-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .f-card .fi { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; background: rgba(255,255,255,0.06); }
+    .f-card h3 { color: white; font-size: 1.05rem; margin-bottom: 10px; font-weight: 700; }
+    .f-card p { color: rgba(255,255,255,0.35); font-size: 0.85rem; line-height: 1.7; }
 
-    .landing-footer { position: relative; z-index: 2; border-top: 1px solid rgba(255,255,255,0.05); padding: 24px 20px; text-align: center; }
-    .landing-footer p { color: rgba(255,255,255,0.25); font-size: 0.78rem; }
+    .landing-footer { position: relative; z-index: 10; border-top: 1px solid rgba(255,255,255,0.04); padding: 28px 20px; text-align: center; }
+    .landing-footer p { color: rgba(255,255,255,0.15); font-size: 0.78rem; }
 
-    /* ===== MODAL ===== */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+    /* ===== MODAL LUXURY ===== */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
-    .modal { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 440px; box-shadow: var(--shadow-xl); overflow: hidden; animation: modalIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
-    @keyframes modalIn { from { transform: scale(0.92) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
-    .modal-header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 24px 28px; color: white; display: flex; justify-content: space-between; align-items: center; }
-    .modal-header h2 { font-size: 1.15rem; font-weight: 700; }
-    .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.12); color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-    .modal-close:hover { background: rgba(255,255,255,0.2); }
-    .modal-body { padding: 24px; }
-    .modal-tabs { display: flex; gap: 0; margin-bottom: 24px; background: var(--bg); border-radius: var(--radius-sm); padding: 3px; }
-    .modal-tabs button { flex: 1; padding: 9px; border: none; background: transparent; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: 0.2s; color: var(--text-muted); border-radius: 8px; }
-    .modal-tabs button.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm); }
+    .modal { background: var(--surface); border-radius: 24px; width: 100%; max-width: 440px; box-shadow: var(--shadow-xl); overflow: hidden; animation: modalRise 0.5s var(--ease); }
+    @keyframes modalRise { from { transform: scale(0.9) translateY(40px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+    .modal-header { padding: 28px 28px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+    .modal-header div h2 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px; }
+    .modal-header div p { font-size: 0.85rem; color: var(--text-3); margin-top: 4px; font-weight: 400; }
+    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--surface-hover); color: var(--text-3); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s var(--ease); flex-shrink: 0; }
+    .modal-close:hover { background: var(--border); color: var(--text); }
+    .modal-body { padding: 20px 28px 28px; }
+    .modal-tabs { display: flex; gap: 0; background: var(--bg); border-radius: var(--radius-sm); padding: 3px; margin-bottom: 24px; }
+    .modal-tabs button { flex: 1; padding: 10px; border: none; background: transparent; font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: 0.3s var(--ease); color: var(--text-3); border-radius: 8px; }
+    .modal-tabs button.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-xs); }
 
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-weight: 600; font-size: 0.72rem; margin-bottom: 6px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.9rem;
-      transition: var(--transition); background: var(--surface-hover); font-family: inherit; color: var(--text);
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-weight: 600; font-size: 0.72rem; margin-bottom: 6px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; }
+    .fg input, .fg textarea, .fg select {
+      width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.9rem;
+      transition: 0.3s var(--ease); background: var(--surface-hover); font-family: inherit; color: var(--text); -webkit-appearance: none; appearance: none;
     }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
-    }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(37,99,235,0.08); }
 
-    .btn { padding: 10px 22px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: var(--transition); border: none; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+    .btn { padding: 11px 22px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.3s var(--ease); border: none; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: #1d4ed8; box-shadow: 0 4px 15px rgba(37,99,235,0.25); }
+    .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 20px rgba(37,99,235,0.25); transform: translateY(-1px); }
     .btn-success { background: var(--success); color: white; }
-    .btn-success:hover { background: #059669; box-shadow: 0 4px 15px rgba(16,185,129,0.25); }
+    .btn-success:hover { background: #059669; box-shadow: 0 4px 20px rgba(16,185,129,0.25); transform: translateY(-1px); }
     .btn-danger { background: var(--danger); color: white; }
     .btn-danger:hover { background: #dc2626; }
     .btn-warning { background: var(--warning); color: white; }
     .btn-warning:hover { background: var(--accent-dark); }
-    .btn-secondary { background: #e2e8f0; color: var(--text-secondary); }
-    .btn-secondary:hover { background: #cbd5e0; }
-    .btn-sm { padding: 6px 12px; font-size: 0.72rem; }
+    .btn-ghost { background: transparent; color: var(--text-3); border: 1px solid var(--border) !important; }
+    .btn-ghost:hover { background: var(--surface-hover); border-color: var(--text-3) !important; }
+    .btn-sm { padding: 7px 14px; font-size: 0.72rem; }
+    .btn-xs { padding: 4px 10px; font-size: 0.68rem; border-radius: 6px; }
     .btn-block { width: 100%; }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-spinner { display: none; width: 16px; height: 16px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.6s linear infinite; }
     .btn.loading .btn-text { display: none; }
     .btn.loading .btn-spinner { display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .form-error { color: var(--danger); font-size: 0.78rem; margin-top: 10px; display: none; text-align: center; background: #fef2f2; padding: 8px 12px; border-radius: 8px; border: 1px solid #fecaca; }
 
-    /* ===== APP HEADER ===== */
+    .form-error { color: var(--danger); font-size: 0.78rem; margin-top: 10px; display: none; text-align: center; background: var(--danger-light); padding: 8px 12px; border-radius: 8px; border: 1px solid #fecaca; }
+
+    /* ===== APP HEADER LUXURY ===== */
     #appContent { display: none; }
     #appContent.active { display: block; }
-    .app-header { background: linear-gradient(135deg, #0c1833, #1a365d); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-    .app-header-inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .app-logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 800; }
-    .app-logo span { color: #93c5fd; }
-    .app-user { display: flex; align-items: center; gap: 14px; }
-    .app-user-name { font-size: 0.85rem; font-weight: 600; }
-    .badge { padding: 3px 14px; border-radius: var(--radius-full); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-    .badge-doctor { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #0c1833; }
-    .badge-paciente { background: linear-gradient(135deg, #34d399, #10b981); color: #0c1833; }
-    .btn-logout { padding: 7px 18px; border-radius: var(--radius-full); border: 1px solid rgba(255,255,255,0.15); background: transparent; color: white; font-size: 0.78rem; cursor: pointer; transition: 0.2s; font-weight: 600; }
-    .btn-logout:hover { background: rgba(255,255,255,0.08); border-color: white; }
+    .app-header { background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .app-header-inner { max-width: 1280px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .app-logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .app-logo span { color: var(--primary); }
+    .app-user { display: flex; align-items: center; gap: 16px; }
+    .app-user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem; font-weight: 700; }
+    .app-user-info { text-align: right; }
+    .app-user-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .badge { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-doctor { color: var(--accent-dark); }
+    .badge-paciente { color: var(--success); }
+    .btn-logout { padding: 7px 18px; border-radius: var(--radius-full); border: 1px solid var(--border); background: transparent; color: var(--text-3); font-size: 0.78rem; cursor: pointer; transition: 0.3s var(--ease); font-weight: 500; }
+    .btn-logout:hover { background: var(--surface-hover); border-color: var(--text-3); }
 
-    .app-body { max-width: 1200px; margin: 0 auto; padding: 28px 24px 60px; }
+    .app-body { max-width: 1280px; margin: 0 auto; padding: 28px 24px 60px; }
 
-    /* ===== STATS ===== */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 28px; }
-    .s-card { background: var(--surface); border-radius: var(--radius); padding: 22px 20px; border: 1px solid var(--border); transition: var(--transition); }
-    .s-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-    .s-card .ico { font-size: 1.5rem; margin-bottom: 10px; }
-    .s-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); line-height: 1; }
-    .s-card .lbl { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+    /* ===== STATS LUXURY ===== */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .s-card { background: var(--surface); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); transition: all 0.4s var(--ease); position: relative; overflow: hidden; }
+    .s-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); opacity: 0; transition: 0.4s var(--ease); }
+    .s-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .s-card:hover::before { opacity: 1; }
+    .s-card .ico { font-size: 1.5rem; margin-bottom: 12px; }
+    .s-card .num { font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -0.5px; }
+    .s-card .lbl { font-size: 0.72rem; color: var(--text-4); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 
-    /* ===== CARD ===== */
-    .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px solid var(--border-light); }
-    .card-header h2 { font-size: 1rem; display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text); }
+    .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-xs); border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; transition: box-shadow 0.3s var(--ease); }
+    .card:hover { box-shadow: var(--shadow); }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border-2); }
+    .card-header h2 { font-size: 1rem; display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: -0.2px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .app-header-inner { flex-wrap: wrap; gap: 10px; } }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .app-header-inner { flex-wrap: wrap; gap: 10px; } .app-user-info { display: none; } }
 
-    /* ===== TABLE ===== */
     .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    th { background: var(--surface-hover); text-align: left; padding: 12px 16px; font-weight: 600; color: var(--text-secondary); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); }
-    td { padding: 12px 16px; border-bottom: 1px solid var(--border-light); }
+    th { background: var(--surface-hover); text-align: left; padding: 12px 16px; font-weight: 600; color: var(--text-3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border-2); }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--surface-hover); }
-    .acciones { white-space: nowrap; }
+    .acciones { white-space: nowrap; gap: 4px; display: flex; }
 
-    /* ===== SEARCH ===== */
     .search-box { position: relative; }
-    .search-box input { width: 100%; padding: 9px 14px 9px 36px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.82rem; transition: var(--transition); background: var(--surface-hover); color: var(--text); }
+    .search-box input { padding: 9px 14px 9px 36px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.82rem; transition: 0.3s var(--ease); background: var(--surface-hover); color: var(--text); width: 100%; }
     .search-box input:focus { border-color: var(--primary); outline: none; background: white; }
-    .search-box .ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; opacity: 0.35; pointer-events: none; }
+    .search-box .ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; opacity: 0.3; pointer-events: none; }
 
-    .info-box { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 24px; margin-bottom: 24px; display: flex; gap: 16px; align-items: flex-start; }
-    .info-box .icon { font-size: 2rem; line-height: 1; }
-    .info-box h3 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 4px; font-weight: 700; }
-    .info-box p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+    .info-box { background: linear-gradient(135deg, var(--primary-faint), #dbeafe); border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 28px; margin-bottom: 28px; display: flex; gap: 16px; align-items: flex-start; }
+    .info-box .icon { font-size: 2.2rem; line-height: 1; }
+    .info-box h3 { font-size: 1.1rem; color: var(--primary-deeper); margin-bottom: 4px; font-weight: 700; }
+    .info-box p { color: var(--text-3); font-size: 0.85rem; line-height: 1.6; }
 
     .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
-    .info-item { padding: 12px 14px; background: var(--surface-hover); border-radius: 8px; border: 1px solid var(--border-light); }
-    .info-item .label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.4px; }
-    .info-item .value { font-size: 0.88rem; color: var(--text); margin-top: 3px; font-weight: 500; }
+    .info-item { padding: 14px 16px; background: var(--surface-hover); border-radius: var(--radius-xs); border: 1px solid var(--border-2); }
+    .info-item .lbl { font-size: 0.65rem; text-transform: uppercase; color: var(--text-4); font-weight: 600; letter-spacing: 0.4px; }
+    .info-item .val { font-size: 0.88rem; color: var(--text); margin-top: 3px; font-weight: 500; }
 
     .hidden { display: none !important; }
-    .empty-state { text-align: center; padding: 48px 20px; color: var(--text-muted); }
-    .empty-state .ico { font-size: 3rem; margin-bottom: 12px; opacity: 0.4; }
+    .empty-state { text-align: center; padding: 56px 20px; color: var(--text-4); }
+    .empty-state .ico { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
     .empty-state p { font-size: 0.85rem; }
 
-    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 22px; border-radius: var(--radius-sm); color: white; font-weight: 600; z-index: 9999; box-shadow: var(--shadow-lg); animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85rem; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(12px); }
-    .toast-success { background: rgba(16,185,129,0.95); }
-    .toast-error { background: rgba(239,68,68,0.95); }
-    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 24px; border-radius: 12px; color: white; font-weight: 600; z-index: 9999; box-shadow: var(--shadow-lg); animation: slideUp 0.5s var(--ease); font-size: 0.85rem; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(16px); }
+    .toast-success { background: rgba(16,185,129,0.92); }
+    .toast-error { background: rgba(239,68,68,0.92); }
+    @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
 <!-- ===== LANDING ===== -->
 <div id="landing">
-  <div class="bg-grid"></div>
-  <div class="bg-gradient"></div>
+  <div class="noise"></div>
+  <div class="gradient-orb orb-1"></div>
+  <div class="gradient-orb orb-2"></div>
 
   <nav class="landing-nav">
     <a class="landing-logo" href="#">
-      <span class="icon-wrap">🏥</span>
+      <span class="icon-wrap">✦</span>
       <span class="text">Vene<span>Med</span></span>
     </a>
     <div class="landing-buttons">
@@ -209,35 +225,38 @@
 
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-badge"><span class="dot"></span> ✦ Salud Digital Soberana</div>
-      <h1>Tu salud, <span>siempre contigo</span></h1>
-      <p>Accede a tu historial clínico, consulta recetas médicas y mantén el control total de tu información. Sin intermediarios, sin límites.</p>
+      <div class="hero-badge"><span class="dot"></span>✦ Sistema de Salud Soberano</div>
+      <h1>Tu salud, <span>en tus manos</span></h1>
+      <p>Accede a tu historial clínico, consulta recetas y mantén el control total de tu información médica. Sin intermediarios. Sin límites. Siempre contigo.</p>
       <div class="hero-actions">
-        <button class="btn btn-hero-primary" onclick="abrirModal('register')">✦ Crear mi cuenta</button>
-        <button class="btn btn-hero-secondary" onclick="abrirModal('login')">Ya estoy registrado</button>
+        <button class="btn btn-hero-primary" onclick="abrirModal('register')">✦ Comienza ahora</button>
+        <button class="btn btn-hero-secondary" onclick="abrirModal('login')">Iniciar Sesión</button>
       </div>
-      <div class="stats-bar">
-        <div class="s-item"><div class="num" id="statPacientes">0</div><div class="lbl">Pacientes</div></div>
-        <div class="s-item"><div class="num" id="statRecetas">0</div><div class="lbl">Recetas</div></div>
-        <div class="s-item"><div class="num" id="statDoctores">1</div><div class="lbl">Doctores</div></div>
+      <div class="hero-stats">
+        <div class="hs-item"><div class="num" id="statPacientes">0</div><div class="lbl">Pacientes</div></div>
+        <div class="hs-item"><div class="num" id="statRecetas">0</div><div class="lbl">Recetas</div></div>
+        <div class="hs-item"><div class="num" id="statDoctores">1</div><div class="lbl">Doctores</div></div>
       </div>
     </div>
   </section>
 
   <section class="features">
-    <div class="f-card"><div class="fi">🔐</div><h3>Privacidad Total</h3><p>Tus datos médicos están protegidos con autenticación por token. Solo tú y tu médico tienen acceso.</p></div>
-    <div class="f-card"><div class="fi">📋</div><h3>Historial Digital</h3><p>Tu historial clínico completo disponible 24/7 desde cualquier dispositivo, en cualquier lugar.</p></div>
-    <div class="f-card"><div class="fi">💊</div><h3>Recetas Instantáneas</h3><p>Los doctores recetan digitalmente. Tú recibes tus tratamientos al instante, sin papeles.</p></div>
+    <div class="f-card"><div class="fi">🔐</div><h3>Privacidad Absoluta</h3><p>Tus datos protegidos con autenticación por token. Solo tú y tu médico tienen acceso autorizado a tu información.</p></div>
+    <div class="f-card"><div class="fi">📋</div><h3>Historial Inteligente</h3><p>Tu historial médico completo, disponible 24/7 desde cualquier dispositivo. Acceso inmediato, sin esperas.</p></div>
+    <div class="f-card"><div class="fi">💊</div><h3>Recetas Digitales</h3><p>Los doctores recetan al instante. Tú recibes tus medicamentos sin papeleo, de forma rápida y segura.</p></div>
   </section>
 
-  <footer class="landing-footer"><p>VeneMed &mdash; Sistema de Salud Soberano &copy; 2026</p></footer>
+  <footer class="landing-footer"><p>VeneMed — Sistema de Salud Soberano © 2026</p></footer>
 </div>
 
 <!-- ===== MODAL ===== -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <h2 id="modalTitle">Iniciar Sesión</h2>
+      <div>
+        <h2 id="modalTitle">Iniciar Sesión</h2>
+        <p id="modalSub">Accede a tu portal de salud</p>
+      </div>
       <button class="modal-close" onclick="cerrarModal()">✕</button>
     </div>
     <div class="modal-body">
@@ -247,28 +266,21 @@
       </div>
 
       <div id="loginForm">
-        <div class="form-group"><label>Usuario / Cédula</label><input type="text" id="loginUsuario" placeholder="admin o V-12345678"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="loginClave" placeholder="••••••••"></div>
-        <button class="btn btn-primary btn-block" id="loginBtn" onclick="login()" disabled>
-          <span class="btn-text">Ingresar</span>
-          <span class="btn-spinner"></span>
-        </button>
+        <div class="fg"><label>Usuario o Cédula</label><input type="text" id="loginUsuario" placeholder="admin o V-12345678"></div>
+        <div class="fg"><label>Contraseña</label><input type="password" id="loginClave" placeholder="Ingresa tu contraseña"></div>
+        <button class="btn btn-primary btn-block" id="loginBtn" onclick="login()" disabled><span class="btn-text">Ingresar</span><span class="btn-spinner"></span></button>
         <div class="form-error" id="loginError"></div>
       </div>
 
       <div id="registerForm" class="hidden">
-        <div class="form-group"><label>Nombre *</label><input type="text" id="regNombre" placeholder="Tu nombre"></div>
-        <div class="form-group"><label>Apellido *</label><input type="text" id="regApellido" placeholder="Tu apellido"></div>
-        <div class="form-group"><label>Cédula *</label><input type="text" id="regCedula" placeholder="V-12345678"></div>
-        <div class="form-group"><label>Contraseña *</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres"></div>
-        <div class="form-group"><label>Teléfono</label><input type="text" id="regTelefono" placeholder="0412-1234567"></div>
-        <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="correo@ejemplo.com"></div>
-        <div class="form-group"><label>Dirección</label><input type="text" id="regDireccion" placeholder="Tu dirección"></div>
-        <button class="btn btn-success btn-block" id="registerBtn" onclick="register()" disabled>
-          <span class="btn-text">Crear mi cuenta</span>
-          <span class="btn-spinner"></span>
-        </button>
+        <div class="fg"><label>Nombre</label><input type="text" id="regNombre" placeholder="Tu nombre"></div>
+        <div class="fg"><label>Apellido</label><input type="text" id="regApellido" placeholder="Tu apellido"></div>
+        <div class="fg"><label>Cédula</label><input type="text" id="regCedula" placeholder="V-12345678"></div>
+        <div class="fg"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres"></div>
+        <div class="fg"><label>Teléfono</label><input type="text" id="regTelefono" placeholder="0412-1234567"></div>
+        <button class="btn btn-success btn-block" id="registerBtn" onclick="register()" disabled><span class="btn-text">Crear cuenta</span><span class="btn-spinner"></span></button>
         <div class="form-error" id="registerError"></div>
+        <p style="font-size:0.75rem;color:var(--text-4);text-align:center;margin-top:12px;">Al registrarte aceptas nuestros términos y condiciones</p>
       </div>
     </div>
   </div>
@@ -278,51 +290,54 @@
 <div id="appContent">
   <header class="app-header">
     <div class="app-header-inner">
-      <div class="app-logo">🏥 Vene<span>Med</span></div>
+      <div class="app-logo">✦ Vene<span>Med</span></div>
       <div class="app-user">
-        <span class="app-user-name" id="userNameDisplay"></span>
-        <span class="badge" id="userRoleBadge"></span>
-        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+        <div class="app-user-info">
+          <div class="app-user-name" id="userNameDisplay"></div>
+          <span class="badge" id="userRoleBadge"></span>
+        </div>
+        <div class="app-user-avatar" id="userAvatar">A</div>
+        <button class="btn-logout" onclick="logout()">Salir</button>
       </div>
     </div>
   </header>
 
   <div class="app-body">
     <div id="doctorView" class="hidden">
-      <div class="stats-grid" id="doctorStats">
-        <div class="s-card"><div class="ico">👥</div><div class="num" id="statTotalPacientes">0</div><div class="lbl">Pacientes</div></div>
-        <div class="s-card"><div class="ico">💊</div><div class="num" id="statTotalRecetas">0</div><div class="lbl">Recetas</div></div>
+      <div class="stats-grid">
+        <div class="s-card"><div class="ico">👥</div><div class="num" id="statTotalPacientes">0</div><div class="lbl">Pacientes Registrados</div></div>
+        <div class="s-card"><div class="ico">💊</div><div class="num" id="statTotalRecetas">0</div><div class="lbl">Recetas Emitidas</div></div>
         <div class="s-card"><div class="ico">📋</div><div class="num" id="statPacientesHoy">0</div><div class="lbl">Atendidos Hoy</div></div>
       </div>
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-header"><h2>➕ Registrar Paciente</h2></div>
-          <div class="form-group"><label>Nombre *</label><input type="text" id="pNombre"></div>
-          <div class="form-group"><label>Apellido *</label><input type="text" id="pApellido"></div>
-          <div class="form-group"><label>Cédula *</label><input type="text" id="pCedula"></div>
-          <div class="form-group"><label>Contraseña</label><input type="text" id="pPassword" value="123456"></div>
-          <div class="form-group"><label>Fecha de Nacimiento</label><input type="date" id="pFechaNac"></div>
-          <div class="form-group"><label>Teléfono</label><input type="text" id="pTelefono"></div>
-          <div class="form-group"><label>Email</label><input type="email" id="pEmail"></div>
-          <div class="form-group"><label>Dirección</label><input type="text" id="pDireccion"></div>
-          <div class="form-group"><label>Historial Médico</label><textarea id="pHistorial" rows="3"></textarea></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div class="card-header"><h2>➕ Nuevo Paciente</h2></div>
+          <div class="fg"><label>Nombre</label><input type="text" id="pNombre"></div>
+          <div class="fg"><label>Apellido</label><input type="text" id="pApellido"></div>
+          <div class="fg"><label>Cédula</label><input type="text" id="pCedula"></div>
+          <div class="fg"><label>Contraseña</label><input type="text" id="pPassword" value="123456"></div>
+          <div class="fg"><label>Fecha de Nac.</label><input type="date" id="pFechaNac"></div>
+          <div class="fg"><label>Teléfono</label><input type="text" id="pTelefono"></div>
+          <div class="fg"><label>Email</label><input type="email" id="pEmail"></div>
+          <div class="fg"><label>Dirección</label><input type="text" id="pDireccion"></div>
+          <div class="fg"><label>Historial Médico</label><textarea id="pHistorial" rows="2"></textarea></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
             <button class="btn btn-primary" onclick="crearPaciente()">💾 Guardar</button>
-            <button class="btn btn-secondary hidden" onclick="limpiarFormPaciente()" id="btnCancelarEditar">Cancelar</button>
+            <button class="btn btn-ghost hidden" onclick="limpiarFormPaciente()" id="btnCancelarEditar">Cancelar</button>
           </div>
           <input type="hidden" id="editPacienteId">
         </div>
 
         <div class="card">
-          <div class="card-header"><h2>💊 Crear Receta</h2></div>
-          <div class="form-group"><label>Paciente *</label><select id="rPacienteId"></select></div>
-          <div class="form-group"><label>Medicamento *</label><input type="text" id="rMedicamento" placeholder="Ej: Losartan"></div>
-          <div class="form-group"><label>Dosis *</label><input type="text" id="rDosis" placeholder="Ej: 500mg"></div>
-          <div class="form-group"><label>Frecuencia *</label><input type="text" id="rFrecuencia" placeholder="Ej: Cada 12 horas"></div>
-          <div class="form-group"><label>Duración</label><input type="text" id="rDuracion" placeholder="Ej: 30 días"></div>
-          <div class="form-group"><label>Doctor</label><input type="text" id="rDoctor" placeholder="Dr. Rodríguez"></div>
-          <div class="form-group"><label>Notas</label><textarea id="rNotas" rows="2"></textarea></div>
+          <div class="card-header"><h2>💊 Nueva Receta</h2></div>
+          <div class="fg"><label>Paciente</label><select id="rPacienteId"></select></div>
+          <div class="fg"><label>Medicamento</label><input type="text" id="rMedicamento" placeholder="Ej: Losartan"></div>
+          <div class="fg"><label>Dosis</label><input type="text" id="rDosis" placeholder="500mg"></div>
+          <div class="fg"><label>Frecuencia</label><input type="text" id="rFrecuencia" placeholder="Cada 12h"></div>
+          <div class="fg"><label>Duración</label><input type="text" id="rDuracion" placeholder="30 días"></div>
+          <div class="fg"><label>Doctor</label><input type="text" id="rDoctor" placeholder="Dr. Rodríguez"></div>
+          <div class="fg"><label>Notas</label><textarea id="rNotas" rows="2"></textarea></div>
           <button class="btn btn-primary" onclick="crearReceta()">💊 Recetar</button>
         </div>
       </div>
@@ -331,12 +346,11 @@
         <div class="card-header"><h2>👥 Pacientes</h2><div class="search-box"><span class="ico">🔍</span><input type="text" placeholder="Buscar..." oninput="filtrarPacientes(this.value)"></div></div>
         <div class="table-wrap"><table><thead><tr><th>ID</th><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Acciones</th></tr></thead><tbody id="tablaPacientes"></tbody></table></div>
         <div class="empty-state hidden" id="emptyPacientes"><div class="ico">👤</div><p>No hay pacientes registrados</p></div>
-        <div class="empty-state hidden" id="emptyPacientesSearch"><div class="ico">🔍</div><p>No se encontraron pacientes</p></div>
       </div>
     </div>
 
     <div id="pacienteView" class="hidden">
-      <div class="info-box"><div class="icon">👋</div><div><h3>Bienvenido, <span id="pNombreBienvenida"></span></h3><p>Portal de salud personal. Consulta tu historial clínico y recetas activas.</p></div></div>
+      <div class="info-box"><div class="icon">👋</div><div><h3>Bienvenido, <span id="pNombreBienvenida"></span></h3><p>Este es tu portal de salud personal. Consulta tu información y recetas activas en un solo lugar.</p></div></div>
       <div class="card"><div class="card-header"><h2>📋 Mi Historia Clínica</h2></div><div id="miInfo" class="info-grid"></div></div>
     </div>
 
@@ -360,12 +374,13 @@
     document.getElementById('loginForm').className = t === 'login' ? '' : 'hidden';
     document.getElementById('registerForm').className = t === 'register' ? '' : 'hidden';
     document.getElementById('modalTitle').textContent = t === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta';
+    document.getElementById('modalSub').textContent = t === 'login' ? 'Accede a tu portal de salud' : 'Regístrate en segundos';
     ['loginError','registerError'].forEach(id => document.getElementById(id).style.display = 'none');
     enableBtns(t);
   }
 
   function checkLogin() { document.getElementById('loginBtn').disabled = !document.getElementById('loginUsuario').value.trim() || !document.getElementById('loginClave').value.trim(); }
-  function checkRegister() { document.getElementById('registerBtn').disabled = !document.getElementById('regNombre').value.trim() || !document.getElementById('regApellido').value.trim() || !document.getElementById('regCedula').value.trim() || !document.getElementById('regPassword').value.trim(); }
+  function checkRegister() { const r = id => document.getElementById(id).value.trim(); document.getElementById('registerBtn').disabled = !r('regNombre') || !r('regApellido') || !r('regCedula') || !r('regPassword'); }
   function enableBtns(t) {
     if (t === 'login') { checkLogin(); ['loginUsuario','loginClave'].forEach(id => document.getElementById(id).oninput = checkLogin); }
     else { checkRegister(); ['regNombre','regApellido','regCedula','regPassword'].forEach(id => document.getElementById(id).oninput = checkRegister); }
@@ -387,14 +402,16 @@
   async function register() {
     loading('registerBtn', true);
     try {
-      const data = await api('POST', '/auth/register', { nombre: document.getElementById('regNombre').value, apellido: document.getElementById('regApellido').value, cedula: document.getElementById('regCedula').value, password: document.getElementById('regPassword').value, telefono: document.getElementById('regTelefono').value, email: document.getElementById('regEmail').value, direccion: document.getElementById('regDireccion').value });
+      const data = await api('POST', '/auth/register', { nombre: document.getElementById('regNombre').value, apellido: document.getElementById('regApellido').value, cedula: document.getElementById('regCedula').value, password: document.getElementById('regPassword').value, telefono: document.getElementById('regTelefono').value });
       token = data.token; userRole = data.role; currentUser = data; toast(data.mensaje, 'success'); entrar();
     } catch (e) { document.getElementById('registerError').textContent = e.message; document.getElementById('registerError').style.display = 'block'; loading('registerBtn', false); }
   }
 
   function entrar() {
     cerrarModal(); document.getElementById('landing').style.display = 'none'; document.getElementById('appContent').classList.add('active');
-    document.getElementById('userNameDisplay').textContent = currentUser.nombre;
+    const name = currentUser.nombre || 'Usuario';
+    document.getElementById('userNameDisplay').textContent = name;
+    document.getElementById('userAvatar').textContent = name[0].toUpperCase();
     const badge = document.getElementById('userRoleBadge');
     if (userRole === 'doctor') {
       badge.textContent = 'Doctor'; badge.className = 'badge badge-doctor';
@@ -403,14 +420,21 @@
     } else {
       badge.textContent = 'Paciente'; badge.className = 'badge badge-paciente';
       document.getElementById('pacienteView').classList.remove('hidden'); document.getElementById('doctorView').classList.add('hidden');
-      document.getElementById('pNombreBienvenida').textContent = currentUser.nombre;
-      api('GET', `/pacientes/${currentUser.id}`).then(p => { document.getElementById('miInfo').innerHTML = ['Nombre Completo',`${p.nombre} ${p.apellido}`,'Cédula',p.cedula,'Teléfono',p.telefono||'-','Email',p.email||'-','Dirección',p.direccion||'-','Nacimiento',p.fecha_nacimiento||'-','Historial Médico',p.historial_medico||'Sin historial'].reduce((a,_,i,A)=>i%2?`${a}</div>`:`${a}<div class="info-item"><div class="label">${A[i]}</div><div class="value">${A[i+1]||'-'}`, '')+(p.historial_medico&&p.historial_medico.length>60?' style="grid-column:1/-1"':''); });
+      document.getElementById('pNombreBienvenida').textContent = name;
+      api('GET', `/pacientes/${currentUser.id}`).then(p => {
+        document.getElementById('miInfo').innerHTML = [
+          ['Nombre Completo', `${p.nombre} ${p.apellido}`], ['Cédula', p.cedula], ['Teléfono', p.telefono||'-'],
+          ['Email', p.email||'-'], ['Dirección', p.direccion||'-'], ['Nacimiento', p.fecha_nacimiento||'-'],
+          ['Historial Médico', p.historial_medico||'Sin historial registrado']
+        ].map(([l, v]) => `<div class="info-item ${l==='Historial Médico'?'info-full':''}"><div class="lbl">${l}</div><div class="val">${v}</div></div>`).join('');
+        document.querySelector('.info-full')?.style.setProperty('grid-column', '1 / -1');
+      });
       verRecetas(currentUser.id);
     }
-    toast(`Bienvenido, ${currentUser.nombre}`, 'success');
+    toast(`Bienvenido, ${name}`, 'success');
   }
 
-  function logout() { token=null; userRole=null; currentUser=null; document.getElementById('landing').style.display='block'; document.getElementById('appContent').classList.remove('active'); ['doctorView','pacienteView','recetasSection'].forEach(id=>document.getElementById(id).classList.add('hidden')); ['loginUsuario','loginClave'].forEach(id=>document.getElementById(id).value=''); toast('Sesión cerrada','success'); }
+  function logout() { token=null;userRole=null;currentUser=null; document.getElementById('landing').style.display='block';document.getElementById('appContent').classList.remove('active');['doctorView','pacienteView','recetasSection'].forEach(id=>document.getElementById(id).classList.add('hidden'));['loginUsuario','loginClave'].forEach(id=>document.getElementById(id).value='');toast('Sesión cerrada','success'); }
 
   async function cargarDash() {
     try {
@@ -425,35 +449,30 @@
     } catch(e) { toast(e.message, 'error'); }
   }
 
-  function filtrarPacientes(t) {
-    if (!t) return renderPacientes(pacientes);
-    const f = pacientes.filter(p => `${p.nombre} ${p.apellido}`.toLowerCase().includes(t.toLowerCase()) || (p.cedula||'').toLowerCase().includes(t.toLowerCase()));
-    renderPacientes(f);
-  }
+  function filtrarPacientes(t) { renderPacientes(t ? pacientes.filter(p => `${p.nombre} ${p.apellido}`.toLowerCase().includes(t.toLowerCase()) || (p.cedula||'').toLowerCase().includes(t.toLowerCase())) : pacientes); }
 
   function renderPacientes(lista) {
     const tbody = document.getElementById('tablaPacientes');
     const empty = document.getElementById('emptyPacientes');
-    const emptyS = document.getElementById('emptyPacientesSearch');
-    if (!lista.length) { tbody.innerHTML = ''; empty.classList.remove('hidden'); emptyS.classList.add('hidden'); return; }
-    empty.classList.add('hidden'); emptyS.classList.add('hidden');
-    tbody.innerHTML = lista.map(p => `<tr><td>${p.id}</td><td><strong>${p.nombre} ${p.apellido}</strong></td><td>${p.cedula}</td><td>${p.telefono||'-'}</td><td class="acciones"><button class="btn btn-primary btn-sm" onclick="verRecetas(${p.id})">📋</button><button class="btn btn-warning btn-sm" onclick="editarPaciente(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.id})">🗑</button></td></tr>`).join('');
+    if (!lista.length) { tbody.innerHTML='';empty.classList.remove('hidden');return; }
+    empty.classList.add('hidden');
+    tbody.innerHTML = lista.map(p => `<tr><td>${p.id}</td><td><strong>${p.nombre} ${p.apellido}</strong></td><td>${p.cedula}</td><td>${p.telefono||'-'}</td><td class="acciones"><button class="btn btn-primary btn-xs" onclick="verRecetas(${p.id})">📋</button><button class="btn btn-warning btn-xs" onclick="editarPaciente(${p.id})">✏️</button><button class="btn btn-danger btn-xs" onclick="eliminarPaciente(${p.id})">🗑</button></td></tr>`).join('');
   }
 
-  function limpiarFormPaciente() { ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial','pPassword'].forEach(id=>document.getElementById(id).value=''); document.getElementById('pPassword').value='123456'; document.getElementById('editPacienteId').value=''; document.getElementById('btnCancelarEditar').classList.add('hidden'); }
+  function limpiarFormPaciente() { ['pNombre','pApellido','pCedula','pFechaNac','pTelefono','pEmail','pDireccion','pHistorial','pPassword'].forEach(id=>document.getElementById(id).value='');document.getElementById('pPassword').value='123456';document.getElementById('editPacienteId').value='';document.getElementById('btnCancelarEditar').classList.add('hidden'); }
 
   async function crearPaciente() {
     const body = { nombre: document.getElementById('pNombre').value, apellido: document.getElementById('pApellido').value, cedula: document.getElementById('pCedula').value, password: document.getElementById('pPassword').value||'123456', fecha_nacimiento: document.getElementById('pFechaNac').value, telefono: document.getElementById('pTelefono').value, email: document.getElementById('pEmail').value, direccion: document.getElementById('pDireccion').value, historial_medico: document.getElementById('pHistorial').value };
     const editId = document.getElementById('editPacienteId').value;
-    try { editId ? await api('PUT', `/pacientes/${editId}`, body) : await api('POST', '/pacientes', body); toast(editId?'Paciente actualizado':'Paciente creado','success'); limpiarFormPaciente(); cargarDash(); } catch(e) { toast(e.message,'error'); }
+    try { editId ? await api('PUT', `/pacientes/${editId}`, body) : await api('POST', '/pacientes', body); toast(editId?'Actualizado':'Creado','success'); limpiarFormPaciente(); cargarDash(); } catch(e) { toast(e.message,'error'); }
   }
 
   async function editarPaciente(id) {
-    try { const p = await api('GET', `/pacientes/${id}`); ['Nombre','Apellido','Cedula','FechaNac','Telefono','Email','Direccion','Historial','Password'].forEach(f => { const v = f==='FechaNac'?'fecha_nacimiento':'historial_medico'; document.getElementById(`p${f}`).value = p[v.toLowerCase()]||p[f.toLowerCase()]||''; }); document.getElementById('editPacienteId').value=id; document.getElementById('btnCancelarEditar').classList.remove('hidden'); window.scrollTo({top:0,behavior:'smooth'}); } catch(e) { toast(e.message,'error'); }
+    try { const p = await api('GET', `/pacientes/${id}`); ['Nombre','Apellido','Cedula'].forEach(f=>document.getElementById(`p${f}`).value=p[f.toLowerCase()]||''); document.getElementById('pFechaNac').value=p.fecha_nacimiento||''; document.getElementById('pTelefono').value=p.telefono||''; document.getElementById('pEmail').value=p.email||''; document.getElementById('pDireccion').value=p.direccion||''; document.getElementById('pHistorial').value=p.historial_medico||''; document.getElementById('pPassword').value=p.password||''; document.getElementById('editPacienteId').value=id; document.getElementById('btnCancelarEditar').classList.remove('hidden'); window.scrollTo({top:0,behavior:'smooth'}); } catch(e) { toast(e.message,'error'); }
   }
 
-  async function eliminarPaciente(id) { if (!confirm('¿Eliminar paciente y sus recetas?')) return; try { await api('DELETE',`/pacientes/${id}`); toast('Eliminado','success'); cargarDash(); document.getElementById('recetasSection').classList.add('hidden'); } catch(e) { toast(e.message,'error'); } }
-  async function cargarSelect() { try { const l=await api('GET','/pacientes'); document.getElementById('rPacienteId').innerHTML = l.map(p=>`<option value="${p.id}">${p.nombre} ${p.apellido}</option>`).join(''); } catch(e) {} }
+  async function eliminarPaciente(id) { if(!confirm('¿Eliminar?'))return; try { await api('DELETE',`/pacientes/${id}`); toast('Eliminado','success'); cargarDash(); document.getElementById('recetasSection').classList.add('hidden'); } catch(e) { toast(e.message,'error'); } }
+  async function cargarSelect() { try { const l=await api('GET','/pacientes'); document.getElementById('rPacienteId').innerHTML=l.map(p=>`<option value="${p.id}">${p.nombre} ${p.apellido}</option>`).join(''); } catch(e) {} }
 
   function limpiarFormReceta() { ['rMedicamento','rDosis','rFrecuencia','rDuracion','rDoctor','rNotas'].forEach(id=>document.getElementById(id).value=''); recetaEditandoId=null; }
 
@@ -467,13 +486,13 @@
       const p=await api('GET',`/pacientes/${pid}`); document.getElementById('recetasPacienteNombre').textContent=`${p.nombre} ${p.apellido}`;
       const recetas=await api('GET',`/pacientes/${pid}/recetas`); const tbody=document.getElementById('tablaRecetas'); const empty=document.getElementById('emptyRecetas'); const col=document.getElementById('accionesCol');
       const isPac=userRole==='paciente'; col.classList.toggle('hidden',isPac);
-      if(!recetas.length){tbody.innerHTML='';empty.classList.remove('hidden');}else{empty.classList.add('hidden');tbody.innerHTML=recetas.map(r=>`<tr><td>${r.id}</td><td><strong>${r.medicamento}</strong></td><td>${r.dosis}</td><td>${r.frecuencia}</td><td>${r.doctor||'-'}</td><td>${new Date(r.fecha_emision).toLocaleDateString()}</td><td class="${isPac?'hidden':''}"><button class="btn btn-warning btn-sm" onclick="editarReceta(${r.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="eliminarReceta(${r.id})">🗑</button></td></tr>`).join('');}
+      if(!recetas.length){tbody.innerHTML='';empty.classList.remove('hidden');}else{empty.classList.add('hidden');tbody.innerHTML=recetas.map(r=>`<tr><td>${r.id}</td><td><strong>${r.medicamento}</strong></td><td>${r.dosis}</td><td>${r.frecuencia}</td><td>${r.doctor||'-'}</td><td>${new Date(r.fecha_emision).toLocaleDateString()}</td><td class="${isPac?'hidden':''}"><button class="btn btn-warning btn-xs" onclick="editarReceta(${r.id})">✏️</button><button class="btn btn-danger btn-xs" onclick="eliminarReceta(${r.id})">🗑</button></td></tr>`).join('');}
       document.getElementById('recetasSection').classList.remove('hidden'); document.getElementById('recetasSection').dataset.pacienteId=pid;
     } catch(e) { toast(e.message,'error'); }
   }
 
   async function editarReceta(id) { try { const r=await api('GET',`/recetas/${id}`); document.getElementById('rPacienteId').value=r.paciente_id; document.getElementById('rMedicamento').value=r.medicamento; document.getElementById('rDosis').value=r.dosis; document.getElementById('rFrecuencia').value=r.frecuencia; document.getElementById('rDuracion').value=r.duracion||''; document.getElementById('rDoctor').value=r.doctor||''; document.getElementById('rNotas').value=r.notas||''; recetaEditandoId=id; window.scrollTo({top:0,behavior:'smooth'}); } catch(e) { toast(e.message,'error'); } }
-  async function eliminarReceta(id) { if(!confirm('¿Eliminar receta?')) return; try { await api('DELETE',`/recetas/${id}`); toast('Eliminada','success'); const pid=document.getElementById('recetasSection').dataset.pacienteId; if(pid) verRecetas(parseInt(pid)); cargarDash(); } catch(e) { toast(e.message,'error'); } }
+  async function eliminarReceta(id) { if(!confirm('¿Eliminar?'))return; try { await api('DELETE',`/recetas/${id}`); toast('Eliminada','success'); const pid=document.getElementById('recetasSection').dataset.pacienteId; if(pid) verRecetas(parseInt(pid)); cargarDash(); } catch(e) { toast(e.message,'error'); } }
 </script>
 </body>
 </html>
