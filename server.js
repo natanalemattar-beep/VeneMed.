@@ -301,11 +301,14 @@ app.get('/', (req, res) => {
 });
 
 initDB().then(() => {
-  app.listen(process.env.PORT || PORT, () => {
-    console.log(`VeneMed corriendo en puerto ${process.env.PORT || PORT} (Supabase)`);
-  });
+  if (process.env.VERCEL !== '1') {
+    app.listen(PORT, () => {
+      console.log(`VeneMed corriendo en http://localhost:${PORT} (Supabase)`);
+    });
+  }
 }).catch(err => {
   console.error('Error inicializando DB:', err.message);
+  if (process.env.VERCEL !== '1') process.exit(1);
 });
 
 module.exports = app;
